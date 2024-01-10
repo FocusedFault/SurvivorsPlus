@@ -35,7 +35,7 @@ namespace SurvivorsPlus.Bandit
             banditDoubleHemorrhage = DamageAPI.ReserveDamageType();
             IL.RoR2.GlobalEventManager.OnHitEnemy += ReduceHemorrhageDuration;
             On.RoR2.HealthComponent.SendDamageDealt += ApplyNewDamageTypes;
-            // On.RoR2.DotController.InitDotCatalog += ChangeHemorrhageTicks;
+            //  On.RoR2.DotController.InitDotCatalog += ChangeHemorrhageTicks;
             On.EntityStates.Bandit2.Weapon.SlashBlade.AuthorityModifyOverlapAttack += IncreaseHemorrhageStacks;
             On.EntityStates.Bandit2.Weapon.Bandit2FirePrimaryBase.OnEnter += ReduceRecoil;
             On.EntityStates.Bandit2.Weapon.FireSidearmResetRevolver.ModifyBullet += AddOpenWound;
@@ -50,7 +50,7 @@ namespace SurvivorsPlus.Bandit
         {
             orig();
             DotController.dotDefs[6].interval = 0.25f;
-            DotController.dotDefs[6].damageCoefficient = 0.33f;
+            DotController.dotDefs[6].damageCoefficient = 0.495f; 0.33 15 is 750%
         }
         */
         private void ReduceHemorrhageDuration(ILContext il)
@@ -62,7 +62,7 @@ namespace SurvivorsPlus.Bandit
             ))
             {
                 ++ilCursor.Index;
-                ilCursor.Next.Operand = 7.5f;
+                ilCursor.Next.Operand = 5f;
             }
             else
                 Debug.LogError("SurvivorPlus: Failed to apply Hemorrhage Duration hook");
@@ -79,14 +79,14 @@ namespace SurvivorsPlus.Bandit
                     {
                         int buffCount = damageReport.victimBody.GetBuffCount(RoR2Content.Buffs.SuperBleed);
                         for (int i = 0; i < buffCount; i++)
-                            damageReport.victimBody.AddBuff(RoR2Content.Buffs.SuperBleed);
+                            DotController.InflictDot(damageReport.victimBody.gameObject, damageReport.attacker, DotController.DotIndex.SuperBleed);
                     }
                 }
             }
             if (DamageAPI.HasModdedDamageType(damageReport.damageInfo, banditDoubleHemorrhage) && damageReport.damageInfo.crit)
             {
                 if (damageReport.victimBody)
-                    damageReport.victimBody.AddBuff(RoR2Content.Buffs.SuperBleed);
+                    DotController.InflictDot(damageReport.victimBody.gameObject, damageReport.attacker, DotController.DotIndex.SuperBleed);
             }
             orig(damageReport);
         }

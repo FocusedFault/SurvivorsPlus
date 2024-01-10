@@ -27,7 +27,7 @@ namespace SurvivorsPlus.Huntress
             phaseBlink.skillDescriptionToken = "<style=cIsUtility>Agile</style>. <style=cIsUtility>Disappear</style> and <style=cIsUtility>teleport</style> a short distance.";
             SkillDef arrowRain = skillLocator.special.skillFamily.variants[0].skillDef;
             arrowRain.skillNameToken = "Electric Volley";
-            arrowRain.skillDescriptionToken = "<style=cIsUtility>Teleport</style> into the sky. Target an area to rain arrows, <style=cIsUtility>shocking</style> enemies for <style=cIsDamage>500% damage per second</style>.";
+            arrowRain.skillDescriptionToken = "<style=cIsUtility>Teleport</style> into the sky. Target an area to rain arrows, <style=cIsUtility>shocking</style> enemies for <style=cIsDamage>350% damage per second</style>.";
 
 
             On.EntityStates.Huntress.ArrowRain.OnEnter += ChangeDamageCoeff;
@@ -37,7 +37,7 @@ namespace SurvivorsPlus.Huntress
 
         private void ChangeDamageCoeff(On.EntityStates.Huntress.ArrowRain.orig_OnEnter orig, EntityStates.Huntress.ArrowRain self)
         {
-            ArrowRain.damageCoefficient = 5f;
+            ArrowRain.damageCoefficient = 3.5f;
             orig(self);
         }
 

@@ -37,7 +37,7 @@ I recommend using [AccelPlus](https://thunderstore.io/package/Nuxlar/AccelPlus/)
 
 ### Arrow Rain (Electric Volley)
 
-- Increased damage 225% -> 400%
+- Increased damage 225% -> 350%
 - Replaced slow with shock
 - Increased proc coefficient 0.2 -> 0.6
 - Can now target flying enemies
@@ -46,8 +46,8 @@ I recommend using [AccelPlus](https://thunderstore.io/package/Nuxlar/AccelPlus/)
 
 ### Hemorrhage
 
-- Reduced length 15s -> 7.5s
-- Reduced damage 2000% -> 1000%
+- Reduced length 15s -> 5s
+- Reduced damage 2000% -> 666%
 
 ### Blast
 
@@ -84,6 +84,13 @@ I recommend using [AccelPlus](https://thunderstore.io/package/Nuxlar/AccelPlus/)
 - Makes firing smoother
 
 ## Changelog
+
+**0.0.3**
+
+- Actually does the things in the patch notes this time
+- Reduces Hemorrhage duration and damage 7.5s -> 5s 1000% -> 666%
+- Reduces Arrow Rain damage 500% -> 350%
+- Fixes additional Hemmorhage stacks not applying
 
 **0.0.2**
 
