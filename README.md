@@ -1,6 +1,6 @@
 # SurvivorsPlus (WIP)
 
-I recommend using [AccelPlus](https://thunderstore.io/package/Nuxlar/AccelPlus/) with this mod
+Adds acceleration to Artificer and MUL-T to match other survivors. Can configure off survivor changes and acceleration change.
 
 ## Commando
 
@@ -37,7 +37,6 @@ I recommend using [AccelPlus](https://thunderstore.io/package/Nuxlar/AccelPlus/)
 
 ### Arrow Rain (Electric Volley)
 
-- Increased damage 225% -> 350%
 - Replaced slow with shock
 - Increased proc coefficient 0.2 -> 0.6
 - Can now target flying enemies
@@ -83,7 +82,23 @@ I recommend using [AccelPlus](https://thunderstore.io/package/Nuxlar/AccelPlus/)
 - Increases range 25 -> 50
 - Makes firing smoother
 
+## Mercenary
+
+- Increases base and level regen to match other melee survivors (2.5/0.5)
+
+### Eviscerate
+
+- Increases damage 110% -> 330%
+
 ## Changelog
+
+**0.0.4**
+
+- Adds config for enabling/disabling survivor changes
+- Adds Merc changes
+- Adds Artificer/MULT accel change
+- Removes Arrow Rain damage buff
+- Fixes engi bubble shield not flashing before deactivating
 
 **0.0.3**
 

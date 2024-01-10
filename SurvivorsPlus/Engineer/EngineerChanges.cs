@@ -13,22 +13,12 @@ namespace SurvivorsPlus.Engineer
     {
         private GameObject bubbleShieldProjectile = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiBubbleShield.prefab").WaitForCompletion();
         private GameObject engi = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiBody.prefab").WaitForCompletion();
-        private EntityStateConfiguration fireBeam = Addressables.LoadAssetAsync<EntityStateConfiguration>("RoR2/Base/Engi/EntityStates.EngiTurret.EngiTurretWeapon.FireBeam.asset").WaitForCompletion();
-        private EntityStateConfiguration bubbleShield = Addressables.LoadAssetAsync<EntityStateConfiguration>("RoR2/Base/Engi/EntityStates.Engi.EngiBubbleShield.Deployed.asset").WaitForCompletion();
-
 
         public EngineerChanges()
         {
-            for (int i = 0; i < fireBeam.serializedFieldsCollection.serializedFields.Length; i++)
-            {
-                if (fireBeam.serializedFieldsCollection.serializedFields[i].fieldName == "maxDistance")
-                    fireBeam.serializedFieldsCollection.serializedFields[i].fieldValue.stringValue = "50";
-            }
-            for (int i = 0; i < bubbleShield.serializedFieldsCollection.serializedFields.Length; i++)
-            {
-                if (bubbleShield.serializedFieldsCollection.serializedFields[i].fieldName == "lifetime")
-                    bubbleShield.serializedFieldsCollection.serializedFields[i].fieldValue.stringValue = "10";
-            }
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Engi/EntityStates.EngiTurret.EngiTurretWeapon.FireBeam.asset", "maxDistance", "50");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Engi/EntityStates.Engi.EngiBubbleShield.Deployed.asset", "lifetime", "10");
+
             SkillLocator skillLocator = engi.GetComponent<SkillLocator>();
 
             SkillDef grenades = skillLocator.primary.skillFamily.variants[0].skillDef;
@@ -38,6 +28,7 @@ namespace SurvivorsPlus.Engineer
             SkillDef mine1 = skillLocator.secondary.skillFamily.variants[0].skillDef;
             mine1.skillDescriptionToken = "Place a large blast radius mine that deals <style=cIsDamage>deal 300% damage</style> each. Can place up to 4.";
 
+            bubbleShieldProjectile.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = 9.5f;
             foreach (Transform child in bubbleShieldProjectile.transform.GetChild(0))
             {
                 if (child.name != "ActiveVisual")
