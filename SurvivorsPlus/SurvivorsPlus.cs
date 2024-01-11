@@ -1,13 +1,12 @@
 using BepInEx;
 using BepInEx.Configuration;
 using RoR2;
-using RoR2.Skills;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace SurvivorsPlus
 {
-  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.5")]
+  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.6")]
 
   public class SurvivorsPlus : BaseUnityPlugin
   {
@@ -20,6 +19,8 @@ namespace SurvivorsPlus
     public static ConfigEntry<bool> enableBanditChanges;
     public static ConfigEntry<bool> enableEngineerChanges;
     public static ConfigEntry<bool> enableMercChanges;
+    public static ConfigEntry<bool> enableREXChanges;
+    public static ConfigEntry<bool> enableRunnerChanges;
 
     private static ConfigFile SPConfig { get; set; }
 
@@ -33,6 +34,8 @@ namespace SurvivorsPlus
       enableBanditChanges = SPConfig.Bind<bool>("General", "Enable Bandit Changes", true, "Toggle bandit changes on/off");
       enableEngineerChanges = SPConfig.Bind<bool>("General", "Enable Engineer Changes", true, "Toggle engineer changes on/off");
       enableMercChanges = SPConfig.Bind<bool>("General", "Enable Mercenary Changes", true, "Toggle mercenary changes on/off");
+      enableREXChanges = SPConfig.Bind<bool>("General", "Enable REX Changes", true, "Toggle REX changes on/off");
+      enableRunnerChanges = SPConfig.Bind<bool>("General", "Enable Railgunner Changes", true, "Toggle Railgunner changes on/off");
 
       if (enableAccelerationChanges.Value)
       {
@@ -50,7 +53,12 @@ namespace SurvivorsPlus
         new Engineer.EngineerChanges();
       if (enableMercChanges.Value)
         new Mercenary.MercenaryChanges();
-      // Artificer, REX, Acrid, Captain, Railgunner, Void Fiend
+      if (enableREXChanges.Value)
+        new REX.REXChanges();
+      if (enableRunnerChanges.Value)
+        new Railgunner.RailgunnerChanges();
+
+      // Artificer, Acrid, Captain, Void Fiend
     }
 
     public static void ChangeEntityStateValue(string entityStateConfiguration, string fieldName, string newValue)

@@ -77,6 +77,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Pressure Mines
 
 - Removes arming mechanic, immediately explodes for 300% damage
+- Reduced cooldown 7s -> 5s
 
 ### Bubble Shield
 
@@ -103,9 +104,39 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Eviscerate
 
-- Increases damage 110% -> 330%
+- Increases damage 110% -> 260%
+
+## REX
+
+### DIRECTIVE: Inject
+
+- Increases proc coefficient 0.5 -> 0.8
+
+## Railgunner
+
+### M99 Sniper
+
+- Reduces damage 1000% -> 800%
+
+### Polar Field Device
+
+- Reverses enemy projectiles instead of slowing them (does deal damage to enemies)
+
+### Supercharge
+
+- Reduces damage 4000% -> 3200%
+
+### Cryocharge
+
+- Reduces damage 2000% -> 1600%
 
 ## Changelog
+
+**0.0.6**
+
+- Decrease Evis damage 330% -> 260%
+- Adds REX change
+- Adds Railgunner changes
 
 **0.0.5**
 
