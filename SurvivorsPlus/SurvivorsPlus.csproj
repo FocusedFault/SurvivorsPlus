@@ -25,6 +25,7 @@
     </PackageReference>
     <PackageReference Include="R2API.Core" Version="5.0.11" />
     <PackageReference Include="R2API.DamageType" Version="1.0.4" />
+    <PackageReference Include="R2API.ContentManagement" Version="1.0.4" />
   </ItemGroup>
 
 </Project>

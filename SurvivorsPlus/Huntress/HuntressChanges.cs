@@ -2,6 +2,7 @@ using RoR2;
 using RoR2.Skills;
 using RoR2.Projectile;
 using EntityStates.Huntress;
+using EntityStates.Huntress.HuntressWeapon;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -15,6 +16,9 @@ namespace SurvivorsPlus.Huntress
         public HuntressChanges()
         {
             SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.HuntressWeapon.FireFlurrySeekingArrow.asset", "orbProcCoefficient", "0.8");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.HuntressWeapon.FireFlurrySeekingArrow.asset", "baseDuration", "1");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.ArrowRain.asset", "damageCoefficient", "4.5");
+
             arrowRainProjectile.GetComponent<ProjectileDotZone>().overlapProcCoefficient = 0.6f;
             arrowRainProjectile.GetComponent<ProjectileDamage>().damageType = DamageType.Generic | DamageType.Shock5s;
 
@@ -27,12 +31,12 @@ namespace SurvivorsPlus.Huntress
             phaseBlink.skillDescriptionToken = "<style=cIsUtility>Agile</style>. <style=cIsUtility>Disappear</style> and <style=cIsUtility>teleport</style> a short distance.";
             SkillDef arrowRain = skillLocator.special.skillFamily.variants[0].skillDef;
             arrowRain.skillNameToken = "Electric Volley";
-            arrowRain.skillDescriptionToken = "<style=cIsUtility>Teleport</style> into the sky. Target an area to rain arrows, <style=cIsUtility>shocking</style> enemies for <style=cIsDamage>225% damage per second</style>.";
+            arrowRain.skillDescriptionToken = "<style=cIsUtility>Teleport</style> into the sky. Target an area to rain arrows, <style=cIsUtility>shocking</style> enemies for <style=cIsDamage>450% damage per second</style>.";
 
             On.EntityStates.Huntress.ArrowRain.UpdateAreaIndicator += ChangeAimLayer;
         }
 
-        private void ChangeAimLayer(On.EntityStates.Huntress.ArrowRain.orig_UpdateAreaIndicator orig, EntityStates.Huntress.ArrowRain self)
+        private void ChangeAimLayer(On.EntityStates.Huntress.ArrowRain.orig_UpdateAreaIndicator orig, ArrowRain self)
         {
             if (!(bool)self.areaIndicatorInstance)
                 return;

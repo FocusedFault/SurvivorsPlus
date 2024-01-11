@@ -33,9 +33,9 @@ namespace SurvivorsPlus.Commando
         {
             base.OnEnter();
             this.characterBody.SetSpreadBloom(0.2f, false);
-            this.duration = BetterSuppressiveFire.totalDuration;
             this.durationBetweenShots = FireBarrage.baseDurationBetweenShots / this.attackSpeedStat;
             this.bulletCount = (int)((double)FireBarrage.baseBulletCount * (double)this.attackSpeedStat);
+            this.duration = this.durationBetweenShots * this.bulletCount;
             this.modelAnimator = this.GetModelAnimator();
             this.modelTransform = this.GetModelTransform();
             this.PlayCrossfade("Gesture, Additive", nameof(FireBarrage), "FireBarrage.playbackRate", this.duration, 0.2f);
@@ -93,7 +93,7 @@ namespace SurvivorsPlus.Commando
                 this.stopwatchBetweenShots -= this.durationBetweenShots;
                 this.FireBullet();
             }
-            if ((double)this.fixedAge < (double)this.duration || this.totalBulletsFired != this.bulletCount || !this.isAuthority)
+            if (this.totalBulletsFired != this.bulletCount || !this.isAuthority)
                 return;
             this.outer.SetNextStateToMain();
         }

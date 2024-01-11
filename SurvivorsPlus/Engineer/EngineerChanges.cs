@@ -6,16 +6,22 @@ using EntityStates.Engi.Mine;
 using EntityStates.Engi.EngiWeapon;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using R2API;
 
 namespace SurvivorsPlus.Engineer
 {
     public class EngineerChanges
     {
+        public static GameObject hitEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/Hitspark1.prefab").WaitForCompletion();
+        public static GameObject laser = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/LaserEngiTurret.prefab").WaitForCompletion();
+
         private GameObject bubbleShieldProjectile = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiBubbleShield.prefab").WaitForCompletion();
         private GameObject engi = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiBody.prefab").WaitForCompletion();
+        private GameObject engiWalkerTurret = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiWalkerTurretBody.prefab").WaitForCompletion();
 
         public EngineerChanges()
         {
+            ContentAddition.AddEntityState<BetterFireBeam>(out _);
             SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Engi/EntityStates.EngiTurret.EngiTurretWeapon.FireBeam.asset", "maxDistance", "50");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Engi/EntityStates.Engi.EngiBubbleShield.Deployed.asset", "lifetime", "10");
 
@@ -27,6 +33,10 @@ namespace SurvivorsPlus.Engineer
 
             SkillDef mine1 = skillLocator.secondary.skillFamily.variants[0].skillDef;
             mine1.skillDescriptionToken = "Place a large blast radius mine that deals <style=cIsDamage>deal 300% damage</style> each. Can place up to 4.";
+            mine1.baseRechargeInterval = 5f;
+
+            engiWalkerTurret.AddComponent<TurretBeamRemover>();
+            engiWalkerTurret.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(BetterFireBeam));
 
             bubbleShieldProjectile.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = 9.5f;
             foreach (Transform child in bubbleShieldProjectile.transform.GetChild(0))
@@ -37,20 +47,7 @@ namespace SurvivorsPlus.Engineer
                     child.gameObject.AddComponent<MeshCollider>();
             }
             On.EntityStates.Engi.Mine.BaseMineArmingState.OnEnter += BaseMineArmingState_OnEnter;
-            On.EntityStates.EngiTurret.EngiTurretWeapon.FireBeam.GetBeamEndPoint += FireBeam_GetBeamEndPoint;
             On.EntityStates.Engi.EngiWeapon.FireGrenades.OnEnter += FireGrenades_OnEnter;
-        }
-
-        private Vector3 FireBeam_GetBeamEndPoint(On.EntityStates.EngiTurret.EngiTurretWeapon.FireBeam.orig_GetBeamEndPoint orig, FireBeam self)
-        {
-            Vector3 point = self.laserRay.GetPoint(self.maxDistance);
-            GameObject gameObject = self.gameObject;
-            Ray laserRay = self.laserRay;
-            RaycastHit raycastHit;
-            double maxDistance = (double)self.maxDistance;
-            if (Util.CharacterRaycast(gameObject, laserRay, out raycastHit, (float)maxDistance, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.UseGlobal))
-                point = raycastHit.point;
-            return point;
         }
 
         private void BaseMineArmingState_OnEnter(On.EntityStates.Engi.Mine.BaseMineArmingState.orig_OnEnter orig, BaseMineArmingState self)

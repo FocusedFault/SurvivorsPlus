@@ -14,7 +14,6 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Damage increase 100% -> 200%
 - Proc Coefficient increase 1 -> 1.5
 - Reduces cooldown 9s -> 6s
-- Red bullets :)
 
 ### Grenade (Sticky Grenade)
 
@@ -25,6 +24,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Flurry
 
 - Increased proc coefficient 0.7 -> 0.8
+- Reduced delay duration 1.3s -> 1s
 
 ### Blink
 
@@ -38,6 +38,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Arrow Rain (Electric Volley)
 
 - Replaced slow with shock
+- Increased damage 225% -> 450%
 - Increased proc coefficient 0.2 -> 0.6
 - Can now target flying enemies
 
@@ -45,8 +46,8 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Hemorrhage
 
-- Reduced length 15s -> 5s
-- Reduced damage 2000% -> 666%
+- Reduced length 15s -> 7.5s
+- Reduced damage 2000% -> 1000%
 
 ### Blast
 
@@ -55,6 +56,11 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Serrated Dagger
 
 - Applies 2 stacks of Hemorrhage instead of 1
+
+### Smoke Bomb
+
+- Increases invisibility duration 3s -> 5s
+- Increases cooldown 6s -> 8s
 
 ### Lights Out (Open Wound)
 
@@ -80,17 +86,38 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### TR58 Carbonizer Turret
 
 - Increases range 25 -> 50
+- Can now fire shurikens
 - Makes firing smoother
 
 ## Mercenary
 
 - Increases base and level regen to match other melee survivors (2.5/0.5)
 
+### Blinding Assault
+
+- Increases damage 300% -> 400%
+
+### Focused Assault
+
+- Increases damage 700% -> 800%
+
 ### Eviscerate
 
 - Increases damage 110% -> 330%
 
 ## Changelog
+
+**0.0.5**
+
+- Readds Arrow Rain damage buff
+- Changes engi mobile turrets to fire shurikens
+- Fixes Suppressive Fire to not force a delay after firing
+- Increases duration/damage on Hemorrhage
+- Increases Smoke Bomb duration and cooldown duration by 2s
+- Reduces Proximity Mine cooldown 7s -> 5s
+- Increases Blinding/Focused Assault damage
+- Decreases Flurry duration between shots 1.3s -> 1s
+- Decreases Lights Out (Open Wound) cooldown back to vanilla 6s -> 4s
 
 **0.0.4**
 

@@ -7,7 +7,7 @@ using UnityEngine.AddressableAssets;
 
 namespace SurvivorsPlus
 {
-  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.4")]
+  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.5")]
 
   public class SurvivorsPlus : BaseUnityPlugin
   {

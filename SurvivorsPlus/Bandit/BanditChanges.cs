@@ -1,6 +1,7 @@
 using R2API;
 using RoR2;
 using RoR2.Skills;
+using EntityStates.Bandit2;
 using EntityStates.Bandit2.Weapon;
 using MonoMod.Cil;
 using UnityEngine;
@@ -18,17 +19,23 @@ namespace SurvivorsPlus.Bandit
 
         public BanditChanges()
         {
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Bandit2/EntityStates.Bandit2.StealthMode.asset", "duration", "5");
+
             lightsOutEffect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>().sharedMaterial = bloodMat;
             lightsOutEffect.transform.GetChild(1).GetComponent<ParticleSystemRenderer>().sharedMaterial = bloodMat;
             lightsOutEffect.transform.GetChild(2).GetComponent<ParticleSystemRenderer>().sharedMaterial = bloodMat;
 
             SkillLocator skillLocator = bandit.GetComponent<SkillLocator>();
+
+            skillLocator.utility.skillFamily.variants[0].skillDef.baseRechargeInterval = 8f;
+
             SkillDef dagger = skillLocator.secondary.skillFamily.variants[0].skillDef;
             dagger.skillDescriptionToken = "Lunge and slash for <style=cIsDamage>360% damage</style>. Critical Strikes also cause <style=cIsHealth>2 hemorrhage stacks</style>.";
+
             SkillDef lightsOut = skillLocator.special.skillFamily.variants[0].skillDef;
             lightsOut.skillNameToken = "Open Wound";
             lightsOut.skillDescriptionToken = "<style=cIsDamage>Slayer</style>. Fire a Hemogore round for <style=cIsDamage>600% damage</style>. Critical hits <style=cIsUtility>double hemorrhage stacks</style>.";
-            lightsOut.baseRechargeInterval = 6f;
+            // lightsOut.baseRechargeInterval = 6f;
 
 
             banditOpenWound = DamageAPI.ReserveDamageType();
@@ -40,6 +47,7 @@ namespace SurvivorsPlus.Bandit
             On.EntityStates.Bandit2.Weapon.Bandit2FirePrimaryBase.OnEnter += ReduceRecoil;
             On.EntityStates.Bandit2.Weapon.FireSidearmResetRevolver.ModifyBullet += AddOpenWound;
         }
+
         private void IncreaseHemorrhageStacks(On.EntityStates.Bandit2.Weapon.SlashBlade.orig_AuthorityModifyOverlapAttack orig, SlashBlade self, OverlapAttack overlapAttack)
         {
             DamageAPI.AddModdedDamageType(overlapAttack, banditDoubleHemorrhage);
@@ -62,7 +70,7 @@ namespace SurvivorsPlus.Bandit
             ))
             {
                 ++ilCursor.Index;
-                ilCursor.Next.Operand = 5f;
+                ilCursor.Next.Operand = 7.5f;
             }
             else
                 Debug.LogError("SurvivorPlus: Failed to apply Hemorrhage Duration hook");
