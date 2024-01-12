@@ -112,6 +112,14 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 - Increases proc coefficient 0.5 -> 0.8
 
+## Acrid
+
+### Blight
+
+- Reduces base damage per tick 60% -> 30%
+- Increases duration 5s -> 10s
+- Stacks exponentially (Higher stacks deal more damage per tick)
+
 ## Railgunner
 
 ### M99 Sniper
@@ -124,13 +132,19 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Supercharge
 
-- Reduces damage 4000% -> 3200%
+- Reduces damage 4000% -> 2600%
 
 ### Cryocharge
 
-- Reduces damage 2000% -> 1600%
+- Reduces damage 2000% -> 1200%
 
 ## Changelog
+
+**0.0.7**
+
+- Fixes Railgunner M2 text being on the M1
+- Reduces Supercharge and Cryocharge damage
+- Adds Acrid change
 
 **0.0.6**
 

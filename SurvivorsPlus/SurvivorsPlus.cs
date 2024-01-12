@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 
 namespace SurvivorsPlus
 {
-  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.6")]
+  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.7")]
 
   public class SurvivorsPlus : BaseUnityPlugin
   {
@@ -21,6 +21,7 @@ namespace SurvivorsPlus
     public static ConfigEntry<bool> enableMercChanges;
     public static ConfigEntry<bool> enableREXChanges;
     public static ConfigEntry<bool> enableRunnerChanges;
+    public static ConfigEntry<bool> enableAcridChanges;
 
     private static ConfigFile SPConfig { get; set; }
 
@@ -36,6 +37,7 @@ namespace SurvivorsPlus
       enableMercChanges = SPConfig.Bind<bool>("General", "Enable Mercenary Changes", true, "Toggle mercenary changes on/off");
       enableREXChanges = SPConfig.Bind<bool>("General", "Enable REX Changes", true, "Toggle REX changes on/off");
       enableRunnerChanges = SPConfig.Bind<bool>("General", "Enable Railgunner Changes", true, "Toggle Railgunner changes on/off");
+      enableAcridChanges = SPConfig.Bind<bool>("General", "Enable Acrid Changes", true, "Toggle Acrid changes on/off");
 
       if (enableAccelerationChanges.Value)
       {
@@ -57,8 +59,10 @@ namespace SurvivorsPlus
         new REX.REXChanges();
       if (enableRunnerChanges.Value)
         new Railgunner.RailgunnerChanges();
+      if (enableAcridChanges.Value)
+        new Acrid.AcridChanges();
 
-      // Artificer, Acrid, Captain, Void Fiend
+      // Artificer, Captain, Void Fiend
     }
 
     public static void ChangeEntityStateValue(string entityStateConfiguration, string fieldName, string newValue)
