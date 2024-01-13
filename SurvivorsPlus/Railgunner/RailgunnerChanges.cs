@@ -1,10 +1,12 @@
 using R2API;
 using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using RoR2.Projectile;
 using RoR2.Skills;
 using MonoMod.Cil;
+using Mono.Cecil.Cil;
 
 namespace SurvivorsPlus.Railgunner
 {
@@ -52,12 +54,18 @@ namespace SurvivorsPlus.Railgunner
         private void DoubleLope(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
+            c.GotoNext(MoveType.After,
                 x => x.MatchLdcR4(2f),
-                x => x.MatchLdcR4(1)
+                x => x.MatchLdcR4(1f)
                 );
-            c.Index += 1;
-            c.Next.Operand = 2f;
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<float, CharacterBody, float>>((num, body) =>
+            {
+                if (body.inventory && body.inventory.GetItemCount(DLC1Content.Items.ConvertCritChanceToCritDamage) > 0)
+                    return 2f;
+                else
+                    return num;
+            });
         }
 
         private void DoubleCritMultiplier(ILContext il)

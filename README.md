@@ -208,6 +208,10 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ## Changelog
 
+**0.9.0**
+
+- Fixes Railgunner Laser Scope multiplication being applied to all survivors
+
 **0.0.8**
 
 - Fixes crit items only applying half damage to Railgunner
