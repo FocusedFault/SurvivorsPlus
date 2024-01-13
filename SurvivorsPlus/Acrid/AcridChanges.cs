@@ -36,7 +36,7 @@ namespace SurvivorsPlus.Acrid
         {
             if (dotIndex == DotController.DotIndex.Blight)
             {
-                duration = 10f;
+                duration = 7.5f;
                 if (self.victimBody)
                 {
                     int buffCount = self.victimBody.GetBuffCount(RoR2Content.Buffs.Blight);

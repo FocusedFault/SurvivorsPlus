@@ -137,7 +137,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Blight
 
 - Reduces base damage per tick 60% -> 30%
-- Increases duration 5s -> 10s
+- Increases duration 5s -> 7.5s
 - Stacks exponentially (Higher stacks deal more damage per tick)
 </details>
 
@@ -168,7 +168,9 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 - Is now the primary instead of smart rounds
 - Reduces damage 400% -> 300%
-- Extra crit damage removed
+- Cannot crit or hit weakspots with this ability
+- Has an active reload system (uses secondary charges)
+- Has an active reload bonus of +50% total damage
 
 ### M99 Sniper
 
@@ -207,6 +209,11 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**0.9.1**
+
+- Changes Railgunner's M1 to be closer to RoR1/RoRR Sniper
+- Decreases Blight duration 10s -> 7.5s
 
 **0.9.0**
 

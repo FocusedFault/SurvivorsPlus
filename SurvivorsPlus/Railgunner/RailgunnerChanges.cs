@@ -1,10 +1,13 @@
 using R2API;
 using RoR2;
+using RoR2.Skills;
+using RoR2.Projectile;
+using EntityStates;
+using EntityStates.Railgunner.Weapon;
+using EntityStates.Railgunner.Reload;
 using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using RoR2.Projectile;
-using RoR2.Skills;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 
@@ -21,7 +24,6 @@ namespace SurvivorsPlus.Railgunner
 
         public RailgunnerChanges()
         {
-            SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeLight.asset", "critDamageMultiplier", "0.5");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeLight.asset", "damageCoefficient", "3");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeHeavy.asset", "damageCoefficient", "6");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeSuper.asset", "damageCoefficient", "20");
@@ -49,6 +51,8 @@ namespace SurvivorsPlus.Railgunner
 
             IL.RoR2.CharacterBody.RecalculateStats += DoubleLope;
             IL.RoR2.CharacterBody.RecalculateStats += DoubleCritMultiplier;
+            On.EntityStates.Railgunner.Weapon.BaseFireSnipe.OnEnter += AddReload;
+            On.EntityStates.Railgunner.Weapon.BaseFireSnipe.ModifyBullet += AlterBullet;
         }
 
         private void DoubleLope(ILContext il)
@@ -78,6 +82,43 @@ namespace SurvivorsPlus.Railgunner
                 );
             c.Index += 2;
             c.Next.Operand = 0.02f;
+        }
+
+        private void AddReload(On.EntityStates.Railgunner.Weapon.BaseFireSnipe.orig_OnEnter orig, BaseFireSnipe self)
+        {
+            if (self is FireSnipeLight)
+            {
+                self.useSecondaryStocks = true;
+                self.queueReload = true;
+            }
+            orig(self);
+        }
+
+        private void AlterBullet(On.EntityStates.Railgunner.Weapon.BaseFireSnipe.orig_ModifyBullet orig, BaseFireSnipe self, BulletAttack bulletAttack)
+        {
+            if (self is FireSnipeLight)
+            {
+                bulletAttack.sniper = false;
+                bulletAttack.falloffModel = BulletAttack.FalloffModel.None;
+                EntityStateMachine byCustomName1 = EntityStateMachine.FindByCustomName(self.gameObject, "Reload");
+                if ((bool)byCustomName1)
+                {
+                    if (byCustomName1.state is Boosted state2)
+                    {
+                        bulletAttack.damage += state2.GetBonusDamage() / 4;
+                        state2.ConsumeBoost(self.queueReload);
+                    }
+                    else if (self.queueReload && byCustomName1.state is Waiting state1)
+                        state1.QueueReload();
+                }
+                EntityStateMachine byCustomName2 = EntityStateMachine.FindByCustomName(self.gameObject, "Backpack");
+                EntityState newNextState = self.InstantiateBackpackState();
+                if (!(bool)byCustomName2 || newNextState == null)
+                    return;
+                byCustomName2.SetNextState(newNextState);
+            }
+            else
+                orig(self, bulletAttack);
         }
 
         private void FamilyChanges()
