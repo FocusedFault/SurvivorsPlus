@@ -4,6 +4,8 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ## Commando
 
+<details>
+
 ### Roll
 
 - No longer stops sprinting
@@ -18,8 +20,11 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Grenade (Sticky Grenade)
 
 - now with more stick
+</details>
 
 ## Huntress
+
+<details>
 
 ### Flurry
 
@@ -41,8 +46,11 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Increased damage 225% -> 450%
 - Increased proc coefficient 0.2 -> 0.6
 - Can now target flying enemies
+</details>
 
 ## Bandit
+
+<details>
 
 ### Hemorrhage
 
@@ -67,8 +75,11 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - No longer resets cooldowns on kill
 - Doubles Hemorrhage stacks (on crit)
 - Applies Hemorrhage (on crit)
+</details>
 
 ## Engineer
+
+<details>
 
 ### Bouncing Grenades
 
@@ -89,8 +100,11 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Increases range 25 -> 50
 - Can now fire shurikens
 - Makes firing smoother
+</details>
 
 ## Mercenary
+
+<details>
 
 - Increases base and level regen to match other melee survivors (2.5/0.5)
 
@@ -105,26 +119,60 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Eviscerate
 
 - Increases damage 110% -> 260%
+</details>
 
 ## REX
+
+<details>
 
 ### DIRECTIVE: Inject
 
 - Increases proc coefficient 0.5 -> 0.8
+</details>
 
 ## Acrid
+
+<details>
 
 ### Blight
 
 - Reduces base damage per tick 60% -> 30%
 - Increases duration 5s -> 10s
 - Stacks exponentially (Higher stacks deal more damage per tick)
+</details>
+
+## Captain
+
+<details>
+
+### Defensive Microbots
+
+- No longer deletes puddles/pools
+
+### Power Tazer
+
+- Bounces to nearby enemies in a 15m radius
+</details>
 
 ## Railgunner
 
+<details>
+
+- Crit damage now applies properly instead of being halved
+
+### Smart Rounds
+
+- Removed
+
+### HH44 Marksman (HH44 Rounds)
+
+- Is now the primary instead of smart rounds
+- Reduces damage 400% -> 300%
+- Extra crit damage removed
+
 ### M99 Sniper
 
-- Reduces damage 1000% -> 800%
+- Reduces damage 1000% -> 600%
 
 ### Polar Field Device
 
@@ -132,13 +180,44 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Supercharge
 
-- Reduces damage 4000% -> 2600%
+- Reduces damage 4000% -> 2000%
 
 ### Cryocharge
 
 - Reduces damage 2000% -> 1200%
+</details>
+
+## Void Fiend
+
+<details>
+
+- Removes Crit mechanic
+- Removes Heal mechanic
+- Corruption only increases while in combat
+- Corruption increase is reduced by 66%
+- Corruption increases on kill
+- Corrupted Mode no longer has +100 armor
+- Corrupted Mode decreases slower
+- Reduces Corrupted Mode transition time by 25%
+
+</details>
+
+## Credits
+
+- Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**0.0.8**
+
+- Fixes crit items only applying half damage to Railgunner
+- Swaps Railgunners M1 with HH44
+- Reduced M99 damage
+- Reduced HH44 damage
+- Reduced Supercharge damage
+- Fixes Acrid Blight description text
+- Adds Captain changes
+- Adds Void Fiend changes
 
 **0.0.7**
 

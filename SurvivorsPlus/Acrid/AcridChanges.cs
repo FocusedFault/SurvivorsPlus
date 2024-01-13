@@ -1,7 +1,6 @@
 using RoR2;
 using RoR2.Skills;
 using UnityEngine;
-using System;
 using UnityEngine.AddressableAssets;
 
 namespace SurvivorsPlus.Acrid
@@ -13,7 +12,7 @@ namespace SurvivorsPlus.Acrid
 
         public AcridChanges()
         {
-            blight.skillDescriptionToken = "Attacks that apply <style=cIsHealing>Poison</style> apply stacking <style=cIsDamage>Blight<style> instead, dealing <style=cIsDamage>30% damage per second</style> and <style=cIsUtility>stacks exponentially</style>.";
+            blight.skillDescriptionToken = "Attacks that apply <style=cIsHealing>Poison</style> apply stacking <style=cIsDamage>Blight</style> instead, dealing <style=cIsDamage>30% exponentially stacking damage per second</style>.";
             On.RoR2.DotController.AddDot += ChangeBlight;
             On.RoR2.DotController.InitDotCatalog += ChangeBlightTicks;
         }

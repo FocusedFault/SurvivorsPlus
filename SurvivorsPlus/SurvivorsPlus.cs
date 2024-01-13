@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 
 namespace SurvivorsPlus
 {
-  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.7")]
+  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.0.8")]
 
   public class SurvivorsPlus : BaseUnityPlugin
   {
@@ -22,6 +22,8 @@ namespace SurvivorsPlus
     public static ConfigEntry<bool> enableREXChanges;
     public static ConfigEntry<bool> enableRunnerChanges;
     public static ConfigEntry<bool> enableAcridChanges;
+    public static ConfigEntry<bool> enableCaptainChanges;
+    public static ConfigEntry<bool> enableVoidFiendChanges;
 
     private static ConfigFile SPConfig { get; set; }
 
@@ -38,6 +40,8 @@ namespace SurvivorsPlus
       enableREXChanges = SPConfig.Bind<bool>("General", "Enable REX Changes", true, "Toggle REX changes on/off");
       enableRunnerChanges = SPConfig.Bind<bool>("General", "Enable Railgunner Changes", true, "Toggle Railgunner changes on/off");
       enableAcridChanges = SPConfig.Bind<bool>("General", "Enable Acrid Changes", true, "Toggle Acrid changes on/off");
+      enableCaptainChanges = SPConfig.Bind<bool>("General", "Enable Captain Changes", true, "Toggle Captain changes on/off");
+      enableVoidFiendChanges = SPConfig.Bind<bool>("General", "Enable Void Fiend Changes", true, "Toggle Void Fiend changes on/off");
 
       if (enableAccelerationChanges.Value)
       {
@@ -61,8 +65,11 @@ namespace SurvivorsPlus
         new Railgunner.RailgunnerChanges();
       if (enableAcridChanges.Value)
         new Acrid.AcridChanges();
-
-      // Artificer, Captain, Void Fiend
+      if (enableCaptainChanges.Value)
+        new Captain.CaptainChanges();
+      if (enableVoidFiendChanges.Value)
+        new VoidFiend.VoidFiendChanges();
+      // Artificer
     }
 
     public static void ChangeEntityStateValue(string entityStateConfiguration, string fieldName, string newValue)
@@ -74,6 +81,14 @@ namespace SurvivorsPlus
           entityState.serializedFieldsCollection.serializedFields[i].fieldValue.stringValue = newValue;
       }
     }
-
+    public static void ChangeEntityStateValueO(string entityStateConfiguration, string fieldName, Object newValue)
+    {
+      EntityStateConfiguration entityState = Addressables.LoadAssetAsync<EntityStateConfiguration>(entityStateConfiguration).WaitForCompletion();
+      for (int i = 0; i < entityState.serializedFieldsCollection.serializedFields.Length; i++)
+      {
+        if (entityState.serializedFieldsCollection.serializedFields[i].fieldName == fieldName)
+          entityState.serializedFieldsCollection.serializedFields[i].fieldValue.objectValue = newValue;
+      }
+    }
   }
 }
