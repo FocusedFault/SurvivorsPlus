@@ -24,9 +24,11 @@ namespace SurvivorsPlus.Railgunner
 
         public RailgunnerChanges()
         {
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Backpack.Offline.asset", "baseDuration", "10");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeLight.asset", "critDamageMultiplier", "0");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeLight.asset", "damageCoefficient", "3");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeHeavy.asset", "damageCoefficient", "6");
-            SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeSuper.asset", "damageCoefficient", "20");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeSuper.asset", "damageCoefficient", "24");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/DLC1/Railgunner/EntityStates.Railgunner.Weapon.FireSnipeCryo.asset", "damageCoefficient", "12");
 
             polarMine.AddComponent<PolarSlow>();
@@ -45,7 +47,7 @@ namespace SurvivorsPlus.Railgunner
             skillLocator.primary.skillFamily.variants[0].skillDef.skillNameToken = "HH44 Rounds";
             skillLocator.primary.skillFamily.variants[0].skillDef.skillDescriptionToken = "Fire a light projectile for <style=cIsDamage>300% damage</style>.";
             skillLocator.secondary.skillFamily.variants[0].skillDef.skillDescriptionToken = "Activate your <style=cIsUtility>long-range scope</style>, highlighting <style=cIsDamage>Weak Points</style> and transforming your weapon into a piercing <style=cIsDamage>600% damage</style> railgun.";
-            skillLocator.special.skillFamily.variants[0].skillDef.skillDescriptionToken = "Fire a <style=cIsDamage>piercing</style> round for <style=cIsDamage>2000% damage</style> and <style=cIsDamage>150% Weak Point damage</style>. Afterwards, <style=cIsHealth>all your weapons are disabled</style> for <style=cIsHealth>5</style> seconds.";
+            skillLocator.special.skillFamily.variants[0].skillDef.skillDescriptionToken = "Fire a <style=cIsDamage>piercing</style> round for <style=cIsDamage>2400% damage</style> and <style=cIsDamage>150% Weak Point damage</style>. Afterwards, <style=cIsHealth>all your weapons are disabled</style> for <style=cIsHealth>10</style> seconds.";
             skillLocator.special.skillFamily.variants[1].skillDef.skillDescriptionToken = "<style=cIsUtility>Freezing</style>. Fire <style=cIsDamage>piercing</style> round for <style=cIsDamage>1200% damage</style>.";
             skillLocator.utility.skillFamily.variants[1].skillDef.skillDescriptionToken = "Throw out a device that <style=cIsUtility>slows down</style> all nearby enemies and <style=cIsUtility>reflects projectiles</style>.";
 
@@ -53,6 +55,13 @@ namespace SurvivorsPlus.Railgunner
             IL.RoR2.CharacterBody.RecalculateStats += DoubleCritMultiplier;
             On.EntityStates.Railgunner.Weapon.BaseFireSnipe.OnEnter += AddReload;
             On.EntityStates.Railgunner.Weapon.BaseFireSnipe.ModifyBullet += AlterBullet;
+            On.RoR2.HurtBox.OnEnable += ReduceWeakpointSize;
+        }
+
+        private void ReduceWeakpointSize(On.RoR2.HurtBox.orig_OnEnable orig, HurtBox self)
+        {
+            orig(self);
+            HurtBox.sniperTargetRadius = 0.75f;
         }
 
         private void DoubleLope(ILContext il)
@@ -88,6 +97,7 @@ namespace SurvivorsPlus.Railgunner
         {
             if (self is FireSnipeLight)
             {
+                // self.critDamageMultiplier = 0.25f;
                 self.useSecondaryStocks = true;
                 self.queueReload = true;
             }
@@ -98,7 +108,7 @@ namespace SurvivorsPlus.Railgunner
         {
             if (self is FireSnipeLight)
             {
-                bulletAttack.sniper = false;
+                bulletAttack.sniper = true;
                 bulletAttack.falloffModel = BulletAttack.FalloffModel.None;
                 EntityStateMachine byCustomName1 = EntityStateMachine.FindByCustomName(self.gameObject, "Reload");
                 if ((bool)byCustomName1)

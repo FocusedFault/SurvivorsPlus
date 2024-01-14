@@ -1,6 +1,6 @@
 ﻿{
 	"name": "SurvivorsPlus",
-	"version_number": "0.9.1",
+	"version_number": "0.9.2",
 	"website_url": "",
 	"description": "Changes or Reworks vanilla survivor abilities (WIP)",
 	"dependencies": [

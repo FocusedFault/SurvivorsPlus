@@ -1,7 +1,6 @@
 using R2API;
 using RoR2;
 using RoR2.Skills;
-using EntityStates.Bandit2;
 using EntityStates.Bandit2.Weapon;
 using MonoMod.Cil;
 using UnityEngine;
@@ -19,6 +18,7 @@ namespace SurvivorsPlus.Bandit
 
         public BanditChanges()
         {
+            bandit.AddComponent<BanditWeakspotController>();
             SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Bandit2/EntityStates.Bandit2.StealthMode.asset", "duration", "5");
 
             lightsOutEffect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>().sharedMaterial = bloodMat;
@@ -26,6 +26,9 @@ namespace SurvivorsPlus.Bandit
             lightsOutEffect.transform.GetChild(2).GetComponent<ParticleSystemRenderer>().sharedMaterial = bloodMat;
 
             SkillLocator skillLocator = bandit.GetComponent<SkillLocator>();
+
+            skillLocator.primary.skillFamily.variants[1].skillDef.skillNameToken = "Hyperion Sharpshooter";
+            skillLocator.primary.skillFamily.variants[1].skillDef.skillDescriptionToken = "Fire a high-impact Graviton shell for <style=cIsDamage>330% damage</style>. Passively activates your <style=cIsUtility>Hyperion HUD</style> that highlights <style=cIsDamage>Weak Points</style>.";
 
             skillLocator.utility.skillFamily.variants[0].skillDef.baseRechargeInterval = 8f;
 
@@ -37,7 +40,6 @@ namespace SurvivorsPlus.Bandit
             lightsOut.skillDescriptionToken = "<style=cIsDamage>Slayer</style>. Fire a Hemogore round for <style=cIsDamage>600% damage</style>. Critical hits <style=cIsUtility>double hemorrhage stacks</style>.";
             // lightsOut.baseRechargeInterval = 6f;
 
-
             banditOpenWound = DamageAPI.ReserveDamageType();
             banditDoubleHemorrhage = DamageAPI.ReserveDamageType();
             IL.RoR2.GlobalEventManager.OnHitEnemy += ReduceHemorrhageDuration;
@@ -46,6 +48,13 @@ namespace SurvivorsPlus.Bandit
             On.EntityStates.Bandit2.Weapon.SlashBlade.AuthorityModifyOverlapAttack += IncreaseHemorrhageStacks;
             On.EntityStates.Bandit2.Weapon.Bandit2FirePrimaryBase.OnEnter += ReduceRecoil;
             On.EntityStates.Bandit2.Weapon.FireSidearmResetRevolver.ModifyBullet += AddOpenWound;
+            On.EntityStates.Bandit2.Weapon.Bandit2FireRifle.ModifyBullet += AddSniperBullet;
+        }
+
+        private void AddSniperBullet(On.EntityStates.Bandit2.Weapon.Bandit2FireRifle.orig_ModifyBullet orig, Bandit2FireRifle self, BulletAttack bulletAttack)
+        {
+            bulletAttack.sniper = true;
+            orig(self, bulletAttack);
         }
 
         private void IncreaseHemorrhageStacks(On.EntityStates.Bandit2.Weapon.SlashBlade.orig_AuthorityModifyOverlapAttack orig, SlashBlade self, OverlapAttack overlapAttack)

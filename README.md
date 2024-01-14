@@ -57,9 +57,10 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Reduced length 15s -> 7.5s
 - Reduced damage 2000% -> 1000%
 
-### Blast
+### Blast (Hyperion Sharpshooter)
 
 - Reduced recoil/bloom
+- Highlights Weak Points that guarantee critical damage
 
 ### Serrated Dagger
 
@@ -159,6 +160,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 <details>
 
 - Crit damage now applies properly instead of being halved
+- Reduces weakpoint size by 25% (mainly for Bandit)
 
 ### Smart Rounds
 
@@ -182,7 +184,8 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Supercharge
 
-- Reduces damage 4000% -> 2000%
+- Reduces damage 4000% -> 2400%
+- Reduces downtime 15s -> 10s
 
 ### Cryocharge
 
@@ -209,6 +212,13 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**0.9.2**
+
+- Decreases Supercharge downtime 15s -> 10s
+- Increases Supercharge damage 2000% -> 2400%
+- Reduces Weak Point size by 25%
+- Changes Blast to Hyperion Sharpshooter (ty Maddie for the idea)
 
 **0.9.1**
 
