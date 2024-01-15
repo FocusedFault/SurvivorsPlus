@@ -14,37 +14,28 @@ namespace SurvivorsPlus.Artificer
     [RequireComponent(typeof(InputBankTest))]
     [RequireComponent(typeof(TeamComponent))]
     [RequireComponent(typeof(CharacterBody))]
-    public class ArtificerController : NetworkBehaviour, IOnTakeDamageServerReceiver, IOnDamageDealtServerReceiver
+    public class ArtificerController : NetworkBehaviour
     {
         [Header("Cached Components")]
         public CharacterBody characterBody;
-        public Animator characterAnimator;
         public EntityStateMachine corruptionModeStateMachine;
         public EntityStateMachine bodyStateMachine;
         public EntityStateMachine weaponStateMachine;
         [Header("Corruption Values")]
-        public float maxCorruption;
-        public float minimumCorruptionPerVoidItem;
-        public float corruptionPerSecondInCombat;
-        public float corruptionPerSecondOutOfCombat;
-        public float corruptionForFullDamage;
-        public float corruptionForFullHeal;
-        public float corruptionPerCrit;
-        public float corruptionDeltaThresholdToAnimate;
-        [Header("Corruption Mode")]
-        public BuffDef corruptedBuffDef;
-        public float corruptionFractionPerSecondWhileCorrupted;
+        public float maxCorruption = 100;
+        public float minimumCorruption = 0;
+        public float corruptionPerSecondInCombat = 3f;
+        public float corruptionPerSecondOutOfCombat = 1.5f;
+        public BuffDef ionBuffDef;
+        public BuffDef iceBuffDef;
+        public BuffDef fireBuffDef;
         [Header("UI")]
-        [SerializeField]
-        public GameObject overlayPrefab;
-        [SerializeField]
-        public string overlayChildLocatorEntry;
+        public GameObject overlayPrefab = ArtificerChanges.uiOverlay;
+        public string overlayChildLocatorEntry = "CrosshairExtras";
         private ChildLocator overlayInstanceChildLocator;
-        private Animator overlayInstanceAnimator;
         private OverlayController overlayController;
         private List<ImageFillController> fillUiList = new List<ImageFillController>();
         private TextMeshProUGUI uiCorruptionText;
-        private int voidItemCount;
         [SyncVar(hook = "OnCorruptionModified")]
         private float _corruption;
 
@@ -54,18 +45,24 @@ namespace SurvivorsPlus.Artificer
 
         public float corruptionPercentage => this.corruptionFraction * 100f;
 
-        public float minimumCorruption => this.minimumCorruptionPerVoidItem * (float)this.voidItemCount;
-
         public bool isFullCorruption => (double)this.corruption >= (double)this.maxCorruption;
-
-        public bool isCorrupted => (bool)(UnityEngine.Object)this.characterBody && this.characterBody.HasBuff(this.corruptedBuffDef);
-
-        public bool isPermanentlyCorrupted => (double)this.minimumCorruption >= (double)this.maxCorruption;
-
-        private HealthComponent bodyHealthComponent => this.characterBody.healthComponent;
+        public string currentElement = "Ion";
 
         private void OnEnable()
         {
+            this.characterBody = this.GetComponent<CharacterBody>();
+            EntityStateMachine[] components = this.GetComponents<EntityStateMachine>();
+            for (int index = 0; index < components.Length; ++index)
+            {
+                EntityStateMachine entityStateMachine = components[index];
+                if (entityStateMachine.customName == "Weapon")
+                    this.weaponStateMachine = entityStateMachine;
+                else if (entityStateMachine.customName == "Body")
+                    this.bodyStateMachine = entityStateMachine;
+                else
+                    this.corruptionModeStateMachine = entityStateMachine;
+            }
+
             this.overlayController = HudOverlayManager.AddOverlay(this.gameObject, new OverlayCreationParams()
             {
                 prefab = this.overlayPrefab,
@@ -73,12 +70,6 @@ namespace SurvivorsPlus.Artificer
             });
             this.overlayController.onInstanceAdded += new Action<OverlayController, GameObject>(this.OnOverlayInstanceAdded);
             this.overlayController.onInstanceRemove += new Action<OverlayController, GameObject>(this.OnOverlayInstanceRemoved);
-            if (!(bool)(UnityEngine.Object)this.characterBody)
-                return;
-            this.characterBody.onInventoryChanged += new Action(this.OnInventoryChanged);
-            if (!NetworkServer.active)
-                return;
-            HealthComponent.onCharacterHealServer += new Action<HealthComponent, float, ProcChainMask>(this.OnCharacterHealServer);
         }
 
         private void OnDisable()
@@ -90,24 +81,14 @@ namespace SurvivorsPlus.Artificer
                 this.fillUiList.Clear();
                 HudOverlayManager.RemoveOverlay(this.overlayController);
             }
-            if (!(bool)(UnityEngine.Object)this.characterBody)
-                return;
-            this.characterBody.onInventoryChanged -= new Action(this.OnInventoryChanged);
-            if (!NetworkServer.active)
-                return;
-            HealthComponent.onCharacterHealServer -= new Action<HealthComponent, float, ProcChainMask>(this.OnCharacterHealServer);
         }
 
         private void FixedUpdate()
         {
-            float num1 = 0.0f;
-            float num2 = !this.characterBody.HasBuff(this.corruptedBuffDef) ? (this.characterBody.outOfCombat ? this.corruptionPerSecondOutOfCombat : this.corruptionPerSecondInCombat) : num1 + this.corruptionFractionPerSecondWhileCorrupted * (this.maxCorruption - this.minimumCorruption);
+            float num2 = this.characterBody.outOfCombat ? this.corruptionPerSecondOutOfCombat : this.corruptionPerSecondInCombat;
             if (NetworkServer.active && !this.characterBody.HasBuff(RoR2Content.Buffs.HiddenInvincibility))
                 this.AddCorruption(num2 * Time.fixedDeltaTime);
             this.UpdateUI();
-            if (!(bool)(UnityEngine.Object)this.characterAnimator)
-                return;
-            this.characterAnimator.SetFloat("corruptionFraction", this.corruptionFraction);
         }
 
         private void UpdateUI()
@@ -118,11 +99,6 @@ namespace SurvivorsPlus.Artificer
             {
                 this.overlayInstanceChildLocator.FindChild("CorruptionThreshold").rotation = Quaternion.Euler(0.0f, 0.0f, Mathf.InverseLerp(0.0f, this.maxCorruption, this.corruption) * -360f);
                 this.overlayInstanceChildLocator.FindChild("MinCorruptionThreshold").rotation = Quaternion.Euler(0.0f, 0.0f, Mathf.InverseLerp(0.0f, this.maxCorruption, this.minimumCorruption) * -360f);
-            }
-            if ((bool)(UnityEngine.Object)this.overlayInstanceAnimator)
-            {
-                this.overlayInstanceAnimator.SetFloat("corruption", this.corruption);
-                this.overlayInstanceAnimator.SetBool("isCorrupted", this.isCorrupted);
             }
             if (!(bool)(UnityEngine.Object)this.uiCorruptionText)
                 return;
@@ -137,44 +113,9 @@ namespace SurvivorsPlus.Artificer
             this.fillUiList.Add(instance.GetComponent<ImageFillController>());
             this.uiCorruptionText = instance.GetComponentInChildren<TextMeshProUGUI>();
             this.overlayInstanceChildLocator = instance.GetComponent<ChildLocator>();
-            this.overlayInstanceAnimator = instance.GetComponent<Animator>();
         }
 
         private void OnOverlayInstanceRemoved(OverlayController controller, GameObject instance) => this.fillUiList.Remove(instance.GetComponent<ImageFillController>());
-
-        private void OnCharacterHealServer(
-          HealthComponent healthComponent,
-          float amount,
-          ProcChainMask procChainMask)
-        {
-            if (healthComponent != this.bodyHealthComponent || procChainMask.HasProc(ProcType.VoidSurvivorCrush))
-                return;
-            this.AddCorruption(amount / this.bodyHealthComponent.fullCombinedHealth * this.corruptionForFullHeal);
-        }
-
-        public void OnDamageDealtServer(DamageReport damageReport)
-        {
-            if (!damageReport.damageInfo.crit)
-                return;
-            this.AddCorruption(damageReport.damageInfo.procCoefficient * this.corruptionPerCrit);
-        }
-
-        public void OnTakeDamageServer(DamageReport damageReport)
-        {
-            float num = damageReport.damageDealt / this.bodyHealthComponent.fullCombinedHealth;
-            if (damageReport.damageInfo.procChainMask.HasProc(ProcType.VoidSurvivorCrush))
-                return;
-            this.AddCorruption(num * this.corruptionForFullDamage);
-        }
-
-        private void OnInventoryChanged()
-        {
-            this.voidItemCount = 0;
-            Inventory inventory = this.characterBody.inventory;
-            if (!(bool)(UnityEngine.Object)inventory)
-                return;
-            this.voidItemCount = inventory.GetTotalItemCountOfTier(ItemTier.VoidTier1) + inventory.GetTotalItemCountOfTier(ItemTier.VoidTier2) + inventory.GetTotalItemCountOfTier(ItemTier.VoidTier3) + inventory.GetTotalItemCountOfTier(ItemTier.VoidBoss);
-        }
 
         [Server]
         public void AddCorruption(float amount)
@@ -187,8 +128,6 @@ namespace SurvivorsPlus.Artificer
 
         private void OnCorruptionModified(float newCorruption)
         {
-            if ((bool)(UnityEngine.Object)this.overlayInstanceAnimator && (double)Mathf.Abs(newCorruption - this.corruption) > (double)this.corruptionDeltaThresholdToAnimate)
-                this.overlayInstanceAnimator.SetTrigger("corruptionIncreased");
             this.Network_corruption = newCorruption;
         }
 

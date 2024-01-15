@@ -24,6 +24,7 @@ namespace SurvivorsPlus
     public static ConfigEntry<bool> enableAcridChanges;
     public static ConfigEntry<bool> enableCaptainChanges;
     public static ConfigEntry<bool> enableVoidFiendChanges;
+    public static ConfigEntry<bool> enableArtificerChanges;
 
     private static ConfigFile SPConfig { get; set; }
 
@@ -42,6 +43,7 @@ namespace SurvivorsPlus
       enableAcridChanges = SPConfig.Bind<bool>("General", "Enable Acrid Changes", true, "Toggle Acrid changes on/off");
       enableCaptainChanges = SPConfig.Bind<bool>("General", "Enable Captain Changes", true, "Toggle Captain changes on/off");
       enableVoidFiendChanges = SPConfig.Bind<bool>("General", "Enable Void Fiend Changes", true, "Toggle Void Fiend changes on/off");
+      enableArtificerChanges = SPConfig.Bind<bool>("General", "Enable Artificer Changes", true, "Toggle Artificer changes on/off");
 
       if (enableAccelerationChanges.Value)
       {
@@ -69,6 +71,8 @@ namespace SurvivorsPlus
         new Captain.CaptainChanges();
       if (enableVoidFiendChanges.Value)
         new VoidFiend.VoidFiendChanges();
+      if (enableArtificerChanges.Value)
+        new Artificer.ArtificerChanges();
       // Artificer
     }
 

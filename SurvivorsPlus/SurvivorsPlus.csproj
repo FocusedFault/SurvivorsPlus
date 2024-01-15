@@ -27,6 +27,7 @@
     <PackageReference Include="R2API.DamageType" Version="1.0.4" />
     <PackageReference Include="R2API.ContentManagement" Version="1.0.4" />
     <PackageReference Include="R2API.RecalculateStats" Version="1.3.0" />
+    <PackageReference Include="R2API.Prefab" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
