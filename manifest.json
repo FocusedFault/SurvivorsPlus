@@ -1,8 +1,8 @@
 ﻿{
 	"name": "SurvivorsPlus",
-	"version_number": "1.0.0",
+	"version_number": "0.9.3",
 	"website_url": "",
-	"description": "Changes/Reworks vanilla survivor abilities",
+	"description": "Changes/Reworks vanilla survivor abilities (WIP)",
 	"dependencies": [
 		"RiskofThunder-R2API_DamageType-1.0.4",
 		"RiskofThunder-R2API_ContentManagement-1.0.4",

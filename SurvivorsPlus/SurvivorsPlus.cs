@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 
 namespace SurvivorsPlus
 {
-  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.9.2")]
+  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.9.3")]
 
   public class SurvivorsPlus : BaseUnityPlugin
   {
@@ -71,8 +71,10 @@ namespace SurvivorsPlus
         new Captain.CaptainChanges();
       if (enableVoidFiendChanges.Value)
         new VoidFiend.VoidFiendChanges();
-      if (enableArtificerChanges.Value)
-        new Artificer.ArtificerChanges();
+      /*
+    if (enableArtificerChanges.Value)
+      new Artificer.ArtificerChanges();
+      */
       // Artificer
     }
 

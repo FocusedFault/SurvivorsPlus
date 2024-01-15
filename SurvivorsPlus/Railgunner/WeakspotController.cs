@@ -3,17 +3,15 @@ using RoR2.HudOverlay;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace SurvivorsPlus.Bandit
+namespace SurvivorsPlus.Railgunner
 {
-    public class BanditWeakspotController : MonoBehaviour
+    public class WeakspotController : MonoBehaviour
     {
-        public GameObject scopeOverlayPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/RailgunnerScopeLightOverlay.prefab").WaitForCompletion().transform.GetChild(0).gameObject;
+        public GameObject scopeOverlayPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/RailgunnerScopeHeavyOverlay.prefab").WaitForCompletion().transform.GetChild(0).gameObject;
         private OverlayController overlayController;
 
         public void Start()
         {
-            if (this.GetComponent<CharacterBody>().skillLocator.primary.skillDef.skillNameToken != "Hyperion Sharpshooter")
-                return;
             this.overlayController = HudOverlayManager.AddOverlay(this.gameObject, new OverlayCreationParams()
             {
                 prefab = this.scopeOverlayPrefab,

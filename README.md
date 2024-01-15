@@ -20,6 +20,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Grenade (Sticky Grenade)
 
 - now with more stick
+
 </details>
 
 ## Huntress
@@ -46,6 +47,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Increased damage 225% -> 450%
 - Increased proc coefficient 0.2 -> 0.6
 - Can now target flying enemies
+
 </details>
 
 ## Bandit
@@ -57,10 +59,9 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Reduced length 15s -> 7.5s
 - Reduced damage 2000% -> 1000%
 
-### Blast (Hyperion Sharpshooter)
+### Blast
 
 - Reduced recoil/bloom
-- Highlights Weak Points that guarantee critical damage
 
 ### Serrated Dagger
 
@@ -76,6 +77,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - No longer resets cooldowns on kill
 - Doubles Hemorrhage stacks (on crit)
 - Applies Hemorrhage (on crit)
+
 </details>
 
 ## Engineer
@@ -101,6 +103,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Increases range 25 -> 50
 - Can now fire shurikens
 - Makes firing smoother
+
 </details>
 
 ## Artificer
@@ -128,6 +131,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Eviscerate
 
 - Increases damage 110% -> 260%
+
 </details>
 
 ## REX
@@ -137,6 +141,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### DIRECTIVE: Inject
 
 - Increases proc coefficient 0.5 -> 0.8
+
 </details>
 
 ## Acrid
@@ -148,6 +153,9 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Reduces base damage per tick 60% -> 30%
 - Increases duration 5s -> 7.5s
 - Stacks exponentially (Higher stacks deal more damage per tick)
+- damage multiplier = (1.5 ^ stacks)
+- damage per tick \* damage multiplier
+
 </details>
 
 ## Captain
@@ -161,6 +169,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Power Tazer
 
 - Bounces to nearby enemies in a 15m radius
+
 </details>
 
 ## Railgunner
@@ -168,7 +177,8 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 <details>
 
 - Crit damage now applies properly instead of being halved
-- Reduces weakpoint size by 25% (mainly for Bandit)
+- Can always see Weak Points
+- Reduces weakpoint size by 25%
 
 ### Smart Rounds
 
@@ -178,9 +188,8 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 - Is now the primary instead of smart rounds
 - Reduces damage 400% -> 300%
-- Cannot crit or hit weakspots with this ability
 - Has an active reload system (uses secondary charges)
-- Has an active reload bonus of +50% total damage
+- Has an active reload bonus of +50% total damage and can hit weakspots
 
 ### M99 Sniper
 
@@ -193,7 +202,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Supercharge
 
 - Reduces damage 4000% -> 2400%
-- Reduces downtime 15s -> 10s
+- Reduces downtime 15s -> 5s
 
 ### Cryocharge
 
@@ -220,6 +229,13 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**0.9.3**
+
+- Removes Hyperion Sharpshooter from Bandit
+- Reduces Supercharge downtime 10s -> 5s
+- Adds a constant weakspot overlay on Railgunner
+- Reduces reload bonus multiplier 5 -> 2.5
 
 **0.9.2**
 
