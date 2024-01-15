@@ -103,6 +103,14 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Makes firing smoother
 </details>
 
+## Artificer
+
+<details>
+
+- Adds Elemental Attunement
+
+</details>
+
 ## Mercenary
 
 <details>
