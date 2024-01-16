@@ -23,7 +23,7 @@ namespace SurvivorsPlus.Engineer
         {
             ContentAddition.AddEntityState<BetterFireBeam>(out _);
             SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Engi/EntityStates.EngiTurret.EngiTurretWeapon.FireBeam.asset", "maxDistance", "50");
-            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Engi/EntityStates.Engi.EngiBubbleShield.Deployed.asset", "lifetime", "10");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Engi/EntityStates.Engi.EngiBubbleShield.Deployed.asset", "lifetime", "10.5");
 
             SkillLocator skillLocator = engi.GetComponent<SkillLocator>();
 
@@ -38,7 +38,7 @@ namespace SurvivorsPlus.Engineer
             engiWalkerTurret.AddComponent<TurretBeamRemover>();
             engiWalkerTurret.GetComponent<SkillLocator>().primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(BetterFireBeam));
 
-            bubbleShieldProjectile.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = 9.5f;
+            bubbleShieldProjectile.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = 10f;
             foreach (Transform child in bubbleShieldProjectile.transform.GetChild(0))
             {
                 if (child.name != "ActiveVisual")

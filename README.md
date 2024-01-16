@@ -106,14 +106,6 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 </details>
 
-## Artificer
-
-<details>
-
-- Adds Elemental Attunement
-
-</details>
-
 ## Mercenary
 
 <details>
@@ -189,7 +181,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Is now the primary instead of smart rounds
 - Reduces damage 400% -> 300%
 - Has an active reload system (uses secondary charges)
-- Has an active reload bonus of +50% total damage and can hit weakspots
+- Has an active reload bonus of +75% total damage and can hit weakspots
 
 ### M99 Sniper
 
@@ -197,7 +189,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Polar Field Device
 
-- Reverses enemy projectiles instead of slowing them (does deal damage to enemies)
+- Increases slow down
 
 ### Supercharge
 
@@ -215,6 +207,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 - Removes Crit mechanic
 - Removes Heal mechanic
+- Removes Damage mechanic
 - Corruption only increases while in combat
 - Corruption increase is reduced by 66%
 - Corruption increases on kill
@@ -229,6 +222,14 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**0.9.4**
+
+- Removes damage/corruption gain for Void Fiend
+- Removes Polar Field Device projectile reversal
+- Reduces reload bonus multiplier more 2.5 -> 1.5
+- Reduces sticky grenade explosion after impact time 2s -> 1s
+- Increases Open Wound cooldown 4s -> 6s
 
 **0.9.3**
 

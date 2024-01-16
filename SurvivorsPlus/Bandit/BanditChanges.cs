@@ -29,12 +29,12 @@ namespace SurvivorsPlus.Bandit
             skillLocator.utility.skillFamily.variants[0].skillDef.baseRechargeInterval = 8f;
 
             SkillDef dagger = skillLocator.secondary.skillFamily.variants[0].skillDef;
-            dagger.skillDescriptionToken = "Lunge and slash for <style=cIsDamage>360% damage</style>. Critical Strikes also cause <style=cIsHealth>2 hemorrhage stacks</style>.";
+            dagger.skillDescriptionToken = "Lunge and slash for <style=cIsDamage>360% damage</style>. Critical Strikes also cause <style=cIsHealth>2 Hemorrhage stacks</style>.";
 
             SkillDef lightsOut = skillLocator.special.skillFamily.variants[0].skillDef;
             lightsOut.skillNameToken = "Open Wound";
-            lightsOut.skillDescriptionToken = "<style=cIsDamage>Slayer</style>. Fire a Hemogore round for <style=cIsDamage>600% damage</style>. Critical hits <style=cIsUtility>double hemorrhage stacks</style>.";
-            // lightsOut.baseRechargeInterval = 6f;
+            lightsOut.skillDescriptionToken = "<style=cIsDamage>Slayer</style>. Fire a Hemogore round for <style=cIsDamage>600% damage</style>. Critical hits <style=cIsUtility>double Hemorrhage stacks</style>.";
+            lightsOut.baseRechargeInterval = 6f;
 
             banditOpenWound = DamageAPI.ReserveDamageType();
             banditDoubleHemorrhage = DamageAPI.ReserveDamageType();

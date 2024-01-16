@@ -33,8 +33,7 @@ namespace SurvivorsPlus.Railgunner
 
             railgunner.AddComponent<WeakspotController>();
 
-            polarMine.AddComponent<PolarSlow>();
-            GameObject.Destroy(polarMine.GetComponent<SlowDownProjectiles>());
+            polarMine.GetComponent<SlowDownProjectiles>().slowDownCoefficient = 0.01f;
 
             SkillLocator skillLocator = railgunner.GetComponent<SkillLocator>();
 
@@ -51,7 +50,7 @@ namespace SurvivorsPlus.Railgunner
             skillLocator.secondary.skillFamily.variants[0].skillDef.skillDescriptionToken = "Activate your <style=cIsUtility>long-range scope</style>, highlighting <style=cIsDamage>Weak Points</style> and transforming your weapon into a piercing <style=cIsDamage>600% damage</style> railgun.";
             skillLocator.special.skillFamily.variants[0].skillDef.skillDescriptionToken = "Fire a <style=cIsDamage>piercing</style> round for <style=cIsDamage>2400% damage</style> and <style=cIsDamage>150% Weak Point damage</style>. Afterwards, <style=cIsHealth>all your weapons are disabled</style> for <style=cIsHealth>5</style> seconds.";
             skillLocator.special.skillFamily.variants[1].skillDef.skillDescriptionToken = "<style=cIsUtility>Freezing</style>. Fire <style=cIsDamage>piercing</style> round for <style=cIsDamage>1200% damage</style>.";
-            skillLocator.utility.skillFamily.variants[1].skillDef.skillDescriptionToken = "Throw out a device that <style=cIsUtility>slows down</style> all nearby enemies and <style=cIsUtility>reflects projectiles</style>.";
+            // skillLocator.utility.skillFamily.variants[1].skillDef.skillDescriptionToken = "Throw out a device that <style=cIsUtility>slows down</style> all nearby <style=cIsUtility>enemies and projectiles</style>.";
 
             IL.RoR2.CharacterBody.RecalculateStats += DoubleLope;
             IL.RoR2.CharacterBody.RecalculateStats += DoubleCritMultiplier;
@@ -63,7 +62,7 @@ namespace SurvivorsPlus.Railgunner
 
         private void ReduceBoostBonus(On.EntityStates.Railgunner.Reload.Boosted.orig_OnEnter orig, Boosted self)
         {
-            self.bonusDamageCoefficient = 2.5f;
+            self.bonusDamageCoefficient = 1.5f;
             orig(self);
         }
 

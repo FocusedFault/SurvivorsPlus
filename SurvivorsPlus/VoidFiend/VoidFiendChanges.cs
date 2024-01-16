@@ -34,6 +34,7 @@ namespace SurvivorsPlus.VoidFiend
             self.corruptionFractionPerSecondWhileCorrupted = -0.033333335f;
             self.corruptionPerSecondInCombat = 1f;
             self.corruptionPerSecondOutOfCombat = 0f;
+            self.corruptionForFullDamage = 0f;
             orig(self);
         }
 

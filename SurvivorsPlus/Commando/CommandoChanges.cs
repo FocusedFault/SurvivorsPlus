@@ -16,6 +16,8 @@ namespace SurvivorsPlus.Commando
 
         public CommandoChanges()
         {
+            stickyGrenade.GetComponent<ProjectileImpactExplosion>().lifetimeAfterImpact = 1f;
+
             SkillLocator skillLocator = commando.GetComponent<SkillLocator>();
 
             SkillDef roll = skillLocator.utility.skillFamily.variants[0].skillDef;
