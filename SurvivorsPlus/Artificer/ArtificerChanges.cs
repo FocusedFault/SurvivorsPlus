@@ -1,17 +1,12 @@
 using R2API;
 using RoR2;
-using RoR2.Orbs;
 using RoR2.Projectile;
 using EntityStates;
 using EntityStates.Mage;
 using EntityStates.Mage.Weapon;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using RoR2.UI;
-using UnityEngine.UI;
 using RoR2.Skills;
-using System.Linq;
 
 namespace SurvivorsPlus.Artificer
 {
@@ -66,7 +61,6 @@ namespace SurvivorsPlus.Artificer
 
         public ArtificerChanges()
         {
-            ContentAddition.AddEntityState<BetterFlamethrower>(out _);
             ContentAddition.AddEntityState<ChargeFireBomb>(out _);
             ContentAddition.AddEntityState<ThrowFireBomb>(out _);
 
@@ -88,14 +82,19 @@ namespace SurvivorsPlus.Artificer
             fireBombProjectile.GetComponent<ProjectileController>().ghostPrefab = fireBombGhost2;
             fireBombProjectile.GetComponent<ProjectileImpactExplosion>().impactEffect = fireBombExplosionEffect;
 
-            fireUtilitySkillDef.baseRechargeInterval = 0f;
-            fireUtilitySkillDef.activationState = new SerializableEntityStateType(typeof(BetterFlamethrower));
+            fireUtilitySkillDef.baseRechargeInterval = 16f;
 
             iceBoltGhost.transform.GetChild(4).GetChild(0).GetComponent<TrailRenderer>().sharedMaterial = iceBoltTrailMat;
             iceBoltGhost.transform.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = iceBoltMat;
             iceBolt.GetComponent<ProjectileImpactExplosion>().impactEffect = iceBoltExplosion;
             icePrimarySkillDef.skillNameToken = "Ice Bolt";
             icePrimarySkillDef.skillDescriptionToken = "<style=cIsUtility>Freezing</style>. Fire a slow, short-range bolt for <style=cIsDamage>300% damage</style>. Hold up to 4.";
+            iceSecondarySkillDef.baseRechargeInterval = 8f;
+            iceUtilitySkillDef.baseRechargeInterval = 16f;
+
+            ionSecondarySkillDef.baseRechargeInterval = 8f;
+            ionUtilitySkillDef.baseRechargeInterval = 16f;
+
 
             string[] keywords = new string[5] { ionMat.shaderKeywords[0], ionMat.shaderKeywords[1], "FRESNEL", "USE_CLOUDS", "_EMISSION" };
             ionMat.shaderKeywords = keywords;
@@ -130,7 +129,7 @@ namespace SurvivorsPlus.Artificer
             On.RoR2.CharacterModel.UpdateOverlays += AddOverlay;
             On.RoR2.CharacterMaster.OnBodyStart += AddIonBuff;
             On.EntityStates.Mage.FlyUpState.OnEnter += TweakIonSurge;
-            // On.EntityStates.Mage.Weapon.Flamethrower.OnEnter += TweakFlamethrower;
+            On.EntityStates.Mage.Weapon.Flamethrower.OnEnter += TweakFlamethrower;
             On.EntityStates.Mage.Weapon.FireFireBolt.OnEnter += FixIceBolt;
             On.EntityStates.Mage.Weapon.BaseChargeBombState.OnEnter += CheckValues1;
             On.EntityStates.Mage.Weapon.BaseThrowBombState.OnEnter += CheckValues2;
@@ -138,28 +137,27 @@ namespace SurvivorsPlus.Artificer
 
         private void TweakIonSurge(On.EntityStates.Mage.FlyUpState.orig_OnEnter orig, FlyUpState self)
         {
-            AnimationCurve curve = new();
-            curve.AddKey(3.5f, 0.1f);
-            curve.AddKey(3.5f, 0.3125126f);
+            orig(self);
+            AnimationCurve curve = AnimationCurve.Linear(0f, 5f, 1f, 0f);
+            curve.AddKey(5f, 0.1f);
+            curve.AddKey(5f, 0.3125126f);
             curve.AddKey(0f, 1f);
             FlyUpState.speedCoefficientCurve = curve;
-            self.flyVector = self.inputBank.aimDirection;
-            orig(self);
+            //  self.flyVector = self.inputBank.aimDirection;
         }
 
         private void TweakFlamethrower(On.EntityStates.Mage.Weapon.Flamethrower.orig_OnEnter orig, Flamethrower self)
         {
-            Flamethrower.ignitePercentChance = 1f;
-            self.maxDistance = 31f;
+            Flamethrower.ignitePercentChance = 100f;
+            self.maxDistance = 32f;
+            Flamethrower.tickFrequency = 5f;
             orig(self);
         }
 
         private void FixIceBolt(On.EntityStates.Mage.Weapon.FireFireBolt.orig_OnEnter orig, FireFireBolt self)
         {
             if (self is FireIceBolt)
-            {
                 self.baseDuration = 0.25f;
-            }
             orig(self);
         }
 
@@ -168,7 +166,8 @@ namespace SurvivorsPlus.Artificer
             if (self is ChargeFireBomb)
             {
                 self.chargeEffectPrefab = fireBombChargeEffect;
-                self.chargeSoundString = Flamethrower.startAttackSoundString;
+                //  Flamethrower.startAttackSoundString
+                self.chargeSoundString = Flamethrower.endAttackSoundString;
                 self.baseDuration = 1.5f;
                 self.minBloomRadius = 0.1f;
                 self.maxBloomRadius = 0.5f;
@@ -197,13 +196,18 @@ namespace SurvivorsPlus.Artificer
         {
             orig(self, body);
             if (body && body.name == "MageBody(Clone)")
+            {
                 body.AddBuff(ionBuff);
+                body.skillLocator.primary.SetSkillOverride((object)this, ArtificerChanges.ionPrimarySkillDef, GenericSkill.SkillOverridePriority.Default);
+                body.skillLocator.secondary.SetSkillOverride((object)this, ArtificerChanges.ionSecondarySkillDef, GenericSkill.SkillOverridePriority.Default);
+                body.skillLocator.utility.SetSkillOverride((object)this, ArtificerChanges.ionUtilitySkillDef, GenericSkill.SkillOverridePriority.Default);
+            }
         }
 
         private void CreateFireSecondary()
         {
-            fireSecondarySkillDef.skillName = "Flame Bomb";
-            (fireSecondarySkillDef as ScriptableObject).name = "Flame Bomb";
+            fireSecondarySkillDef.skillName = "FireBomb";
+            (fireSecondarySkillDef as ScriptableObject).name = "FireBomb";
             fireSecondarySkillDef.skillNameToken = "Flame Bomb";
             fireSecondarySkillDef.skillDescriptionToken = "<style=cIsDamage>Ignite</style>. Charge up an <style=cIsDamage>exploding</style> fire-bomb that deals <style=cIsDamage>400%-1600%</style> damage.";
             fireSecondarySkillDef.icon = ionSecondarySkillDef.icon;
@@ -213,7 +217,7 @@ namespace SurvivorsPlus.Artificer
             fireSecondarySkillDef.interruptPriority = ionSecondarySkillDef.interruptPriority;
 
             fireSecondarySkillDef.baseMaxStock = 1;
-            fireSecondarySkillDef.baseRechargeInterval = ionSecondarySkillDef.baseRechargeInterval;
+            fireSecondarySkillDef.baseRechargeInterval = 8f;
 
             fireSecondarySkillDef.rechargeStock = 1;
             fireSecondarySkillDef.requiredStock = 1;
@@ -244,8 +248,8 @@ namespace SurvivorsPlus.Artificer
             attunementSkill.activationStateMachineName = "Weapon";
             attunementSkill.interruptPriority = InterruptPriority.Death;
 
-            attunementSkill.baseMaxStock = 1;
-            attunementSkill.baseRechargeInterval = 0.5f;
+            attunementSkill.baseMaxStock = 3;
+            attunementSkill.baseRechargeInterval = 30f;
 
             attunementSkill.rechargeStock = 1;
             attunementSkill.requiredStock = 1;
@@ -255,10 +259,10 @@ namespace SurvivorsPlus.Artificer
             attunementSkill.beginSkillCooldownOnSkillEnd = true;
             attunementSkill.canceledFromSprinting = false;
             attunementSkill.forceSprintDuringState = false;
-            attunementSkill.fullRestockOnAssign = true;
+            attunementSkill.fullRestockOnAssign = false;
             attunementSkill.resetCooldownTimerOnUse = false;
             attunementSkill.isCombatSkill = true;
-            attunementSkill.mustKeyPress = false;
+            attunementSkill.mustKeyPress = true;
             attunementSkill.cancelSprintingOnActivation = false;
 
             ContentAddition.AddSkillDef(attunementSkill);
@@ -273,7 +277,7 @@ namespace SurvivorsPlus.Artificer
             primarySkill.skillName = "ArtiPrimary";
             SkillFamily newFamily = ScriptableObject.CreateInstance<SkillFamily>();
             (newFamily as ScriptableObject).name = "ArtiPrimaryFamily";
-            newFamily.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = ionPrimarySkillDef } };
+            newFamily.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = ionPrimarySkillDef }, new SkillFamily.Variant() { skillDef = firePrimarySkillDef }, new SkillFamily.Variant() { skillDef = icePrimarySkillDef } };
             primarySkill._skillFamily = newFamily;
             ContentAddition.AddSkillFamily(newFamily);
             skillLocator.primary = primarySkill;
@@ -282,7 +286,8 @@ namespace SurvivorsPlus.Artificer
             primarySkill.skillName = "ArtiSecondary";
             SkillFamily newFamily2 = ScriptableObject.CreateInstance<SkillFamily>();
             (newFamily2 as ScriptableObject).name = "ArtiSecondaryFamily";
-            newFamily2.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = ionSecondarySkillDef } };
+            newFamily2.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = ionSecondarySkillDef }, new SkillFamily.Variant() { skillDef = fireSecondarySkillDef }, new SkillFamily.Variant() { skillDef = iceSecondarySkillDef } };
+            primarySkill._skillFamily = newFamily;
             secondarySkill._skillFamily = newFamily2;
             ContentAddition.AddSkillFamily(newFamily2);
             skillLocator.secondary = secondarySkill;
@@ -291,7 +296,7 @@ namespace SurvivorsPlus.Artificer
             utilitySkill.skillName = "ArtiUtility";
             SkillFamily newFamily3 = ScriptableObject.CreateInstance<SkillFamily>();
             (newFamily3 as ScriptableObject).name = "ArtiUtilityFamily";
-            newFamily3.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = ionUtilitySkillDef } };
+            newFamily3.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = ionUtilitySkillDef }, new SkillFamily.Variant() { skillDef = fireUtilitySkillDef }, new SkillFamily.Variant() { skillDef = iceUtilitySkillDef } };
             utilitySkill._skillFamily = newFamily3;
             ContentAddition.AddSkillFamily(newFamily3);
             skillLocator.utility = utilitySkill;

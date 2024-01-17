@@ -34,10 +34,6 @@ namespace SurvivorsPlus.Artificer
     {
       base.OnEnter();
       this.attunementController = this.GetComponent<ArtificerController>();
-      if (this.attunementController.corruption < 25f)
-      {
-        return;
-      }
       this.PlayAnimation("Gesture, Additive", "PrepWall", "PrepWall.playbackRate", this.swapDuration);
     }
 

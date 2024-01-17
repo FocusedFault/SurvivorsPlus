@@ -1,4 +1,4 @@
-# SurvivorsPlus (WIP)
+# SurvivorsPlus
 
 Adds acceleration to Artificer and MUL-T to match other survivors. Can configure off survivor changes and acceleration change.
 
@@ -103,6 +103,15 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Increases range 25 -> 50
 - Can now fire shurikens
 - Makes firing smoother
+
+</details>
+
+## Artificer
+
+<details>
+
+- New abilities, 3 elements, can swap between elements, ion surge nerfed, flamethrower buffed, cooldowns increased
+- will type this out later probably im tired
 
 </details>
 
@@ -222,6 +231,10 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**0.9.9**
+
+- Adds Artificer changes
 
 **0.9.4**
 
