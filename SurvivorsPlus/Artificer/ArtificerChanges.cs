@@ -3,7 +3,8 @@ using RoR2;
 using RoR2.Orbs;
 using RoR2.Projectile;
 using EntityStates;
-using EntityStates.CaptainDefenseMatrixItem;
+using EntityStates.Mage;
+using EntityStates.Mage.Weapon;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -17,12 +18,20 @@ namespace SurvivorsPlus.Artificer
     public class ArtificerChanges
     {
         // 
-        public static GameObject uiOverlay = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/VoidSurvivor/VoidSurvivorCorruptionUI.prefab").WaitForCompletion(), "MageAttunementUI");
+        public static GameObject uiOverlay = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/VoidSurvivor/VoidSurvivorCorruptionUI.prefab").WaitForCompletion(), "MageAttunementUI", false);
         public static BuffDef ionBuff;
         public static BuffDef iceBuff;
         public static BuffDef fireBuff;
 
+        public static GameObject flamethrowerEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Mage/MageFlamethrowerEffect.prefab").WaitForCompletion();
+
         public static GameObject fireBombChargeEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Mage/ChargeMageFireBomb.prefab").WaitForCompletion();
+        public static GameObject fireBombExplosionEffect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/BFG/BeamSphereExplosion.prefab").WaitForCompletion(), "FireBombExplosion", false);
+        public static GameObject fireBombGhost = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Mage/ChargeMageFireBomb.prefab").WaitForCompletion(), "FireBombCore", false);
+        public static GameObject fireBombGhost2 = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Drones/PaladinRocketGhost.prefab").WaitForCompletion(), "FireBombGhost2", false);
+        public static GameObject iceBoltGhost = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Mage/MageIceBoltGhost.prefab").WaitForCompletion();
+        public static GameObject iceBolt = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Mage/MageIceBolt.prefab").WaitForCompletion();
+        public static GameObject iceBoltExplosion = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Mage/MuzzleflashMageIceLarge.prefab").WaitForCompletion();
         public static GameObject fireBombProjectile = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Mage/MageFireBombProjectile.prefab").WaitForCompletion();
         public static GameObject ionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Mage/OmniImpactVFXLightningMage.prefab").WaitForCompletion();
         public static GameObject iceEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/EliteIce/AffixWhiteExplosion.prefab").WaitForCompletion();
@@ -38,7 +47,7 @@ namespace SurvivorsPlus.Artificer
 
         public static SkillDef firePrimarySkillDef = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Mage/MageBodyFireFirebolt.asset").WaitForCompletion();
         public static SkillDef fireSecondarySkillDef = ScriptableObject.CreateInstance<SkillDef>();
-        public static SkillDef fireUtilitySkillDef = ScriptableObject.CreateInstance<SkillDef>();
+        public static SkillDef fireUtilitySkillDef = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Mage/MageBodyFlamethrower.asset").WaitForCompletion();
 
         private SkillDef attunementSkill = ScriptableObject.CreateInstance<SkillDef>();
         private SkillDef multSwapSkill = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Toolbot/ToolbotBodySwap.asset").WaitForCompletion();
@@ -46,10 +55,48 @@ namespace SurvivorsPlus.Artificer
         private Material ionMat = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageLightningCore.mat").WaitForCompletion());
         private Material iceMat = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageIceCore.mat").WaitForCompletion());
         private Material fireMat = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageFireCore.mat").WaitForCompletion());
+
+        private Material fireBombMat = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageFirebolt.mat").WaitForCompletion());
+        private Material fireBombMat2 = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageMatrixFire.mat").WaitForCompletion());
+        private Material fireBombMat3 = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageMatrixTriFire.mat").WaitForCompletion());
+        private Material iceBoltMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageMatrixTriIce.mat").WaitForCompletion();
+        private Material iceBoltTrailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Mage/matMageMatrixDirectionalIce.mat").WaitForCompletion();
+
         private GameObject arti = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Mage/MageBody.prefab").WaitForCompletion();
 
         public ArtificerChanges()
         {
+            ContentAddition.AddEntityState<BetterFlamethrower>(out _);
+            ContentAddition.AddEntityState<ChargeFireBomb>(out _);
+            ContentAddition.AddEntityState<ThrowFireBomb>(out _);
+
+            // GameObject.Destroy();
+            fireBombExplosionEffect.GetComponent<ShakeEmitter>().enabled = false;
+            fireBombExplosionEffect.transform.GetChild(0).GetChild(0).GetComponent<ParticleSystemRenderer>().sharedMaterial = fireBombMat;
+            fireBombExplosionEffect.transform.GetChild(0).GetChild(2).GetComponent<ParticleSystemRenderer>().sharedMaterial = fireBombMat2;
+            fireBombExplosionEffect.transform.GetChild(0).GetChild(4).GetComponent<Light>().color = new Color(1f, 0.4924f, 0.3309f, 1f);
+            fireBombExplosionEffect.transform.GetChild(0).GetChild(5).GetComponent<ParticleSystemRenderer>().sharedMaterial = fireBombMat3;
+
+            ContentAddition.AddEffect(fireBombExplosionEffect);
+
+            GameObject.Destroy(fireBombGhost.GetComponent<ObjectScaleCurve>());
+            fireBombGhost.transform.localScale = new Vector3(2f, 2f, 2f);
+            fireBombGhost2.transform.localScale = new Vector3(2f, 2f, 2f);
+            fireBombGhost.transform.parent = fireBombGhost2.transform;
+            fireBombGhost.transform.localPosition = new Vector3(0f, 0f, 0.5f);
+
+            fireBombProjectile.GetComponent<ProjectileController>().ghostPrefab = fireBombGhost2;
+            fireBombProjectile.GetComponent<ProjectileImpactExplosion>().impactEffect = fireBombExplosionEffect;
+
+            fireUtilitySkillDef.baseRechargeInterval = 0f;
+            fireUtilitySkillDef.activationState = new SerializableEntityStateType(typeof(BetterFlamethrower));
+
+            iceBoltGhost.transform.GetChild(4).GetChild(0).GetComponent<TrailRenderer>().sharedMaterial = iceBoltTrailMat;
+            iceBoltGhost.transform.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = iceBoltMat;
+            iceBolt.GetComponent<ProjectileImpactExplosion>().impactEffect = iceBoltExplosion;
+            icePrimarySkillDef.skillNameToken = "Ice Bolt";
+            icePrimarySkillDef.skillDescriptionToken = "<style=cIsUtility>Freezing</style>. Fire a slow, short-range bolt for <style=cIsDamage>300% damage</style>. Hold up to 4.";
+
             string[] keywords = new string[5] { ionMat.shaderKeywords[0], ionMat.shaderKeywords[1], "FRESNEL", "USE_CLOUDS", "_EMISSION" };
             ionMat.shaderKeywords = keywords;
             iceMat.shaderKeywords = keywords;
@@ -82,6 +129,68 @@ namespace SurvivorsPlus.Artificer
 
             On.RoR2.CharacterModel.UpdateOverlays += AddOverlay;
             On.RoR2.CharacterMaster.OnBodyStart += AddIonBuff;
+            On.EntityStates.Mage.FlyUpState.OnEnter += TweakIonSurge;
+            // On.EntityStates.Mage.Weapon.Flamethrower.OnEnter += TweakFlamethrower;
+            On.EntityStates.Mage.Weapon.FireFireBolt.OnEnter += FixIceBolt;
+            On.EntityStates.Mage.Weapon.BaseChargeBombState.OnEnter += CheckValues1;
+            On.EntityStates.Mage.Weapon.BaseThrowBombState.OnEnter += CheckValues2;
+        }
+
+        private void TweakIonSurge(On.EntityStates.Mage.FlyUpState.orig_OnEnter orig, FlyUpState self)
+        {
+            AnimationCurve curve = new();
+            curve.AddKey(3.5f, 0.1f);
+            curve.AddKey(3.5f, 0.3125126f);
+            curve.AddKey(0f, 1f);
+            FlyUpState.speedCoefficientCurve = curve;
+            self.flyVector = self.inputBank.aimDirection;
+            orig(self);
+        }
+
+        private void TweakFlamethrower(On.EntityStates.Mage.Weapon.Flamethrower.orig_OnEnter orig, Flamethrower self)
+        {
+            Flamethrower.ignitePercentChance = 1f;
+            self.maxDistance = 31f;
+            orig(self);
+        }
+
+        private void FixIceBolt(On.EntityStates.Mage.Weapon.FireFireBolt.orig_OnEnter orig, FireFireBolt self)
+        {
+            if (self is FireIceBolt)
+            {
+                self.baseDuration = 0.25f;
+            }
+            orig(self);
+        }
+
+        private void CheckValues1(On.EntityStates.Mage.Weapon.BaseChargeBombState.orig_OnEnter orig, BaseChargeBombState self)
+        {
+            if (self is ChargeFireBomb)
+            {
+                self.chargeEffectPrefab = fireBombChargeEffect;
+                self.chargeSoundString = Flamethrower.startAttackSoundString;
+                self.baseDuration = 1.5f;
+                self.minBloomRadius = 0.1f;
+                self.maxBloomRadius = 0.5f;
+                self.crosshairOverridePrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Mage/MageCrosshair.prefab").WaitForCompletion();
+                self.minChargeDuration = 0.5f;
+            }
+            orig(self);
+        }
+
+        private void CheckValues2(On.EntityStates.Mage.Weapon.BaseThrowBombState.orig_OnEnter orig, BaseThrowBombState self)
+        {
+            if (self is ThrowFireBomb)
+            {
+                self.projectilePrefab = fireBombProjectile;
+                self.muzzleflashEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Mage/MuzzleflashMageFire.prefab").WaitForCompletion();
+                self.baseDuration = 0.4f;
+                self.minDamageCoefficient = 4;
+                self.maxDamageCoefficient = 16;
+                self.force = 1500f;
+                self.selfForce = 500;
+            }
+            orig(self);
         }
 
         private void AddIonBuff(On.RoR2.CharacterMaster.orig_OnBodyStart orig, CharacterMaster self, CharacterBody body)
@@ -93,10 +202,10 @@ namespace SurvivorsPlus.Artificer
 
         private void CreateFireSecondary()
         {
-            fireSecondarySkillDef.skillName = "Fire Bomb";
-            (fireSecondarySkillDef as ScriptableObject).name = "Fire Bomb";
-            fireSecondarySkillDef.skillNameToken = "Fire Bomb";
-            fireSecondarySkillDef.skillDescriptionToken = "something";
+            fireSecondarySkillDef.skillName = "Flame Bomb";
+            (fireSecondarySkillDef as ScriptableObject).name = "Flame Bomb";
+            fireSecondarySkillDef.skillNameToken = "Flame Bomb";
+            fireSecondarySkillDef.skillDescriptionToken = "<style=cIsDamage>Ignite</style>. Charge up an <style=cIsDamage>exploding</style> fire-bomb that deals <style=cIsDamage>400%-1600%</style> damage.";
             fireSecondarySkillDef.icon = ionSecondarySkillDef.icon;
 
             fireSecondarySkillDef.activationState = new SerializableEntityStateType(typeof(ChargeFireBomb));

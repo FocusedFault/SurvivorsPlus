@@ -71,11 +71,8 @@ namespace SurvivorsPlus
         new Captain.CaptainChanges();
       if (enableVoidFiendChanges.Value)
         new VoidFiend.VoidFiendChanges();
-      /*
-    if (enableArtificerChanges.Value)
-      new Artificer.ArtificerChanges();
-      */
-      // Artificer
+      if (enableArtificerChanges.Value)
+        new Artificer.ArtificerChanges();
     }
 
     public static void ChangeEntityStateValue(string entityStateConfiguration, string fieldName, string newValue)
