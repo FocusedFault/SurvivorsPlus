@@ -118,9 +118,6 @@ namespace SurvivorsPlus.Artificer
             CreateFireSecondary();
             icePrimarySkillDef.activationState = new SerializableEntityStateType(typeof(EntityStates.Mage.Weapon.FireIceBolt));
 
-            // create fire utility
-            // edit ion surge to be more of a dash
-
             ContentAddition.AddBuffDef(ionBuff);
             ContentAddition.AddBuffDef(iceBuff);
             ContentAddition.AddBuffDef(fireBuff);
@@ -140,7 +137,7 @@ namespace SurvivorsPlus.Artificer
             orig(self);
             AnimationCurve curve = AnimationCurve.Linear(0f, 5f, 1f, 0f);
             curve.AddKey(5f, 0.1f);
-            curve.AddKey(5f, 0.3125126f);
+            curve.AddKey(3.5f, 0.3125126f);
             curve.AddKey(0f, 1f);
             FlyUpState.speedCoefficientCurve = curve;
             //  self.flyVector = self.inputBank.aimDirection;
@@ -241,7 +238,7 @@ namespace SurvivorsPlus.Artificer
             attunementSkill.skillName = "Attunement";
             (attunementSkill as ScriptableObject).name = "Attunement";
             attunementSkill.skillNameToken = "Attunement";
-            attunementSkill.skillDescriptionToken = "Use <style=cIsUtility>25% Mana</style> to change your element that creates a <style=cIsDamage>300% damage</style> blast around you.";
+            attunementSkill.skillDescriptionToken = "<style=cIsUtility>Swap elements</style>, releasing a <style=cIsDamage>300% damage</style> blast around you.";
             attunementSkill.icon = multSwapSkill.icon;
 
             attunementSkill.activationState = new SerializableEntityStateType(typeof(Attunement));

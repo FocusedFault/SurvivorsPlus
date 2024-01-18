@@ -8,8 +8,8 @@ namespace SurvivorsPlus.Commando
     public class BetterSuppressiveFire : BaseState
     {
         public static GameObject effectPrefab = FireBarrage.effectPrefab;
-        public static GameObject hitEffectPrefab = FireBarrage.hitEffectPrefab;
-        public static GameObject tracerEffectPrefab = FireBarrage.tracerEffectPrefab;
+        public static GameObject hitEffectPrefab = CommandoChanges.newHitEffect;
+        public static GameObject tracerEffectPrefab = CommandoChanges.newTracer;
         public static float damageCoefficient = 2f;
         public static float force = FireSweepBarrage.force;
         public static float minSpread = FireBarrage.minSpread;
@@ -75,7 +75,7 @@ namespace SurvivorsPlus.Commando
                     radius = BetterSuppressiveFire.bulletRadius,
                     smartCollision = true,
                     damageType = DamageType.Generic,
-                    procCoefficient = 1.5f
+                    procCoefficient = 2f
                 }.Fire();
             this.characterBody.AddSpreadBloom(BetterSuppressiveFire.spreadBloomValue);
             ++this.totalBulletsFired;

@@ -18,7 +18,7 @@ namespace SurvivorsPlus.Bandit
 
         public BanditChanges()
         {
-            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Bandit2/EntityStates.Bandit2.StealthMode.asset", "duration", "5");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Bandit2/EntityStates.Bandit2.StealthMode.asset", "duration", "4");
 
             lightsOutEffect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>().sharedMaterial = bloodMat;
             lightsOutEffect.transform.GetChild(1).GetComponent<ParticleSystemRenderer>().sharedMaterial = bloodMat;

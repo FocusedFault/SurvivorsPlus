@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 
 namespace SurvivorsPlus
 {
-  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "0.9.9")]
+  [BepInPlugin("com.Nuxlar.SurvivorsPlus", "SurvivorsPlus", "1.0.0")]
 
   public class SurvivorsPlus : BaseUnityPlugin
   {
@@ -25,6 +25,7 @@ namespace SurvivorsPlus
     public static ConfigEntry<bool> enableCaptainChanges;
     public static ConfigEntry<bool> enableVoidFiendChanges;
     public static ConfigEntry<bool> enableArtificerChanges;
+    public static ConfigEntry<bool> enableLoaderChanges;
 
     private static ConfigFile SPConfig { get; set; }
 
@@ -44,6 +45,7 @@ namespace SurvivorsPlus
       enableCaptainChanges = SPConfig.Bind<bool>("General", "Enable Captain Changes", true, "Toggle Captain changes on/off");
       enableVoidFiendChanges = SPConfig.Bind<bool>("General", "Enable Void Fiend Changes", true, "Toggle Void Fiend changes on/off");
       enableArtificerChanges = SPConfig.Bind<bool>("General", "Enable Artificer Changes", true, "Toggle Artificer changes on/off");
+      enableLoaderChanges = SPConfig.Bind<bool>("General", "Enable Loader Changes", true, "Toggle Loader changes on/off");
 
       if (enableAccelerationChanges.Value)
       {
@@ -73,6 +75,8 @@ namespace SurvivorsPlus
         new VoidFiend.VoidFiendChanges();
       if (enableArtificerChanges.Value)
         new Artificer.ArtificerChanges();
+      if (enableLoaderChanges.Value)
+        new Loader.LoaderChanges();
     }
 
     public static void ChangeEntityStateValue(string entityStateConfiguration, string fieldName, string newValue)

@@ -2,7 +2,6 @@ using RoR2;
 using RoR2.Skills;
 using RoR2.Projectile;
 using EntityStates.Huntress;
-using EntityStates.Huntress.HuntressWeapon;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 

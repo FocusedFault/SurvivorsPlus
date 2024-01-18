@@ -10,9 +10,10 @@ namespace SurvivorsPlus.Commando
     public class CommandoChanges
     {
         private GameObject commando = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Commando/CommandoBody.prefab").WaitForCompletion();
-        private GameObject barrageTracer = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Drones/TracerCommandoBoost.prefab").WaitForCompletion();
         private GameObject stickyGrenade = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Commando/CommandoStickyGrenadeProjectile.prefab").WaitForCompletion();
         private GameObject grenadeVFX = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Commando/OmniExplosionVFXCommandoGrenade.prefab").WaitForCompletion();
+        public static GameObject newTracer = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Commando/TracerBarrage.prefab").WaitForCompletion();
+        public static GameObject newHitEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Commando/HitsparkCommandoShotgun.prefab").WaitForCompletion();
 
         public CommandoChanges()
         {
@@ -29,12 +30,12 @@ namespace SurvivorsPlus.Commando
             grenade.activationState = new EntityStates.SerializableEntityStateType(typeof(ThrowStickyGrenade));
             stickyGrenade.GetComponent<ProjectileImpactExplosion>().impactEffect = grenadeVFX;
 
-            barrageTracer.GetComponent<LineRenderer>().startColor = Color.red;
-            barrageTracer.GetComponent<LineRenderer>().endColor = Color.red;
+            newTracer.GetComponent<LineRenderer>().startWidth = 0.3f;
+            newTracer.GetComponent<LineRenderer>().endWidth = 0.3f;
 
             SkillDef suppressiveFire = skillLocator.special.skillFamily.variants[0].skillDef;
             suppressiveFire.skillNameToken = "Vortex Rounds";
-            suppressiveFire.skillDescriptionToken = "Fire a barrage of high impact rounds that deal <style=cIsDamage>200% damage</style> each with a proc coefficient of <style=cIsUtility>1.5</style>.";
+            suppressiveFire.skillDescriptionToken = "Fire a barrage of high impact rounds that deal <style=cIsDamage>200% damage</style> with <style=cIsUtility>double the proc coefficient</style>.";
             suppressiveFire.activationState = new EntityStates.SerializableEntityStateType(typeof(BetterSuppressiveFire));
             suppressiveFire.baseRechargeInterval = 6f;
 

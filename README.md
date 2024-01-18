@@ -14,7 +14,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Suppressive Fire (Vortex Rounds)
 
 - Damage increase 100% -> 200%
-- Proc Coefficient increase 1 -> 1.5
+- Proc Coefficient increase 1 -> 2
 - Reduces cooldown 9s -> 6s
 
 ### Grenade (Sticky Grenade)
@@ -69,7 +69,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Smoke Bomb
 
-- Increases invisibility duration 3s -> 5s
+- Increases invisibility duration 3s -> 4s
 - Increases cooldown 6s -> 8s
 
 ### Lights Out (Open Wound)
@@ -110,8 +110,27 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 <details>
 
-- New abilities, 3 elements, can swap between elements, ion surge nerfed, flamethrower buffed, cooldowns increased
-- will type this out later probably im tired
+- Will update skill icons later
+- Elemental, swaps between 3 loadouts, Lightning -> Ice -> Fire
+- new ice M1 Ice Bolt, freezes enemies for 2s
+- new fire M2 Flame Bomb, charge and throw an igniting bomb
+- Secondary and Utility have increased cooldowns 8s/16s
+
+### Attunement
+
+- Special ability responsible for swapping elements
+- Skill cooldowns reset on swap
+- 3 max charges, 30s cooldown and recharges 1 by 1
+
+### Ion Surge
+
+- Reduces flight curve so base height is reduced
+
+### Flamethrower
+
+- Increased Ignite chance to 100%
+- Increased distance 21 -> 32
+- Increased damage per tick (less ticks, more damage, overall damage is the same)
 
 </details>
 
@@ -152,10 +171,20 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Blight
 
 - Reduces base damage per tick 60% -> 30%
-- Increases duration 5s -> 7.5s
+- Increases duration 5s -> 10s
 - Stacks exponentially (Higher stacks deal more damage per tick)
 - damage multiplier = (1.5 ^ stacks)
 - damage per tick \* damage multiplier
+
+</details>
+
+## Loader
+
+<details>
+
+- Reduces max hp 160 -> 110
+- Reduces level hp 48 -> 33
+- Reduces base armor 20 -> 0
 
 </details>
 
@@ -181,10 +210,6 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Can always see Weak Points
 - Reduces weakpoint size by 25%
 
-### Smart Rounds
-
-- Removed
-
 ### HH44 Marksman (HH44 Rounds)
 
 - Is now the primary instead of smart rounds
@@ -208,6 +233,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Cryocharge
 
 - Reduces damage 2000% -> 1200%
+
 </details>
 
 ## Void Fiend
@@ -231,6 +257,17 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**1.0.0**
+
+- Might add more reworks later, namely for Captain, REX, and Loader
+- Reduces Smoke Bomb duration 5s -> 4s
+- Increases Blight duration 7.5s -> 10s
+- Increases Vortex Rounds proc coeff 1.5 -> 2.0
+- Changes Vortex Rounds tracer effect
+- Decreases Sticky Grenade explosion delay
+- Readds Railgunner Smart Rounds as an alt M1 instead of removing
+- Adds Loader changes (just stat reductions)
 
 **0.9.9**
 

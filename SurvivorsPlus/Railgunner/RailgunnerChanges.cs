@@ -17,6 +17,7 @@ namespace SurvivorsPlus.Railgunner
     {
         private GameObject railgunner = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/RailgunnerBody.prefab").WaitForCompletion();
         private GameObject polarMine = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/RailgunnerMineAltDetonated.prefab").WaitForCompletion();
+        private SkillDef badPrimary = Addressables.LoadAssetAsync<SkillDef>("RoR2/DLC1/Railgunner/RailgunnerBodyFirePistol.asset").WaitForCompletion();
         private SkillDef snipeLight = Addressables.LoadAssetAsync<SkillDef>("RoR2/DLC1/Railgunner/RailgunnerBodyFireSnipeLight.asset").WaitForCompletion();
         private SkillDef snipeHeavy = Addressables.LoadAssetAsync<SkillDef>("RoR2/DLC1/Railgunner/RailgunnerBodyScopeHeavy.asset").WaitForCompletion();
         private SkillFamily utilityFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/DLC1/Railgunner/RailgunnerBodyUtilityFamily.asset").WaitForCompletion();
@@ -149,7 +150,7 @@ namespace SurvivorsPlus.Railgunner
 
             SkillFamily newFamily = ScriptableObject.CreateInstance<SkillFamily>();
             (newFamily as ScriptableObject).name = "RailgunnerPrimaryFamily";
-            newFamily.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = snipeLight } };
+            newFamily.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = snipeLight }, new SkillFamily.Variant() { skillDef = badPrimary } };
 
             primarySkill._skillFamily = newFamily;
             ContentAddition.AddSkillFamily(newFamily);
