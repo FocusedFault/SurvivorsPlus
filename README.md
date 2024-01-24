@@ -9,17 +9,24 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Roll
 
 - No longer stops sprinting
+- Reduced speed/distance
 - Invincible on roll
+
+### Phase Round (Full Metal Jacket)
+
+- Instant hitscan instead of a projectile
+- Increased initial damage 300% -> 400%
 
 ### Suppressive Fire (Vortex Rounds)
 
-- Damage increase 100% -> 200%
+- Damage increase 100% -> 300%
 - Proc Coefficient increase 1 -> 2
 - Reduces cooldown 9s -> 6s
 
 ### Grenade (Sticky Grenade)
 
-- now with more stick
+- Removed damage falloff
+- Sticky!
 
 </details>
 
@@ -257,6 +264,20 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Moffein [RiskyMod](https://thunderstore.io/package/Risky_Lives/RiskyMod/) for Captain code
 
 ## Changelog
+
+**1.0.1**
+
+- Adds AttackDirectionFix as a dependency
+- Reworks Double Tap
+  - Removed damage falloff
+  - Adds max range/distance (100m)
+- Reworks Phase Round to Full Metal Jacket
+  - Now an instant hitscan round
+  - Starts at 400% damage instead of 300%
+- Adds 4 more bullets to Phase Blast (8x200% -> 12x200%)
+- Reduces Roll's speed/distance
+- Increases Vortex Rounds' damage (200% -> 300%)
+- Removes Sticky Grenade damage falloff
 
 **1.0.0**
 

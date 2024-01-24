@@ -10,7 +10,7 @@ namespace SurvivorsPlus.Commando
         public static GameObject effectPrefab = FireBarrage.effectPrefab;
         public static GameObject hitEffectPrefab = CommandoChanges.newHitEffect;
         public static GameObject tracerEffectPrefab = CommandoChanges.newTracer;
-        public static float damageCoefficient = 2f;
+        public static float damageCoefficient = 3f;
         public static float force = FireSweepBarrage.force;
         public static float minSpread = FireBarrage.minSpread;
         public static float maxSpread = FireBarrage.maxSpread;
