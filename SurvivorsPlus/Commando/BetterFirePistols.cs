@@ -27,7 +27,7 @@ namespace SurvivorsPlus.Commando
                     weapon = this.gameObject,
                     origin = this.aimRay.origin,
                     aimVector = this.aimRay.direction,
-                    maxDistance = 100f,
+                    maxDistance = 75f,
                     falloffModel = BulletAttack.FalloffModel.None,
                     minSpread = 0.0f,
                     maxSpread = this.characterBody.spreadBloomAngle,

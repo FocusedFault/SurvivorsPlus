@@ -59,16 +59,7 @@ namespace SurvivorsPlus.Engineer
                 this.laserEffectInstanceEndTransform = this.laserEffectInstance.GetComponent<ChildLocator>().FindChild("LaserEnd");
             }
         }
-        /*
-                public override void OnExit()
-                {
 
-                    if ((bool)(Object)this.laserEffectInstance)
-                        EntityState.Destroy((Object)this.laserEffectInstance);
-
-                    base.OnExit();
-                }
-        */
         public override void FixedUpdate()
         {
             base.FixedUpdate();

@@ -55,6 +55,7 @@ namespace SurvivorsPlus.Commando
 
             SkillDef grenade = skillLocator.special.skillFamily.variants[1].skillDef;
             grenade.skillNameToken = "Sticky Grenade";
+            grenade.skillDescriptionToken = "Throw a grenade that <style=cIsUtility>sticks to enemies</style> and explodes for <style=cIsDamage>600% damage</style>. Can hold up to 2.";
             grenade.activationState = new EntityStates.SerializableEntityStateType(typeof(ThrowStickyGrenade));
             stickyGrenade.GetComponent<ProjectileImpactExplosion>().impactEffect = grenadeVFX;
 
@@ -63,7 +64,7 @@ namespace SurvivorsPlus.Commando
 
             SkillDef suppressiveFire = skillLocator.special.skillFamily.variants[0].skillDef;
             suppressiveFire.skillNameToken = "Vortex Rounds";
-            suppressiveFire.skillDescriptionToken = "Fire a barrage of high impact rounds that deal <style=cIsDamage>300% damage</style> with <style=cIsUtility>double the proc coefficient</style>.";
+            suppressiveFire.skillDescriptionToken = "Fire a barrage of high impact rounds that deal <style=cIsDamage>200% damage</style> with <style=cIsUtility>double the proc coefficient</style>.";
             suppressiveFire.activationState = new EntityStates.SerializableEntityStateType(typeof(BetterSuppressiveFire));
             suppressiveFire.baseRechargeInterval = 6f;
 
@@ -71,6 +72,14 @@ namespace SurvivorsPlus.Commando
             On.EntityStates.Commando.DodgeState.OnExit += RemoveInvincibility;
             On.EntityStates.Commando.CommandoWeapon.FireShotgunBlast.OnEnter += AlterShotgun;
             On.EntityStates.GenericBulletBaseState.OnEnter += WhyDoIHaveToDoThis;
+            On.EntityStates.GenericProjectileBaseState.OnEnter += AlterSticky;
+        }
+
+        private void AlterSticky(On.EntityStates.GenericProjectileBaseState.orig_OnEnter orig, EntityStates.GenericProjectileBaseState self)
+        {
+            if (self is ThrowStickyGrenade)
+                self.damageCoefficient = 6f;
+            orig(self);
         }
 
         private void AlterShotgun(On.EntityStates.Commando.CommandoWeapon.FireShotgunBlast.orig_OnEnter orig, FireShotgunBlast self)
@@ -88,7 +97,7 @@ namespace SurvivorsPlus.Commando
                 self.hitEffectPrefab = FMJHitEffect;
                 self.muzzleFlashPrefab = FMJMuzzleEffect;
                 self.damageCoefficient = 4f;
-                self.bulletRadius = 0.5f;
+                self.bulletRadius = 1f;
                 self.bulletCount = 1;
                 self.muzzleName = "MuzzleCenter";
             }

@@ -18,8 +18,8 @@ namespace SurvivorsPlus.Commando
             Util.PlaySound(BetterPhaseRound.fireFMJSoundString, this.gameObject);
             if (!(bool)(Object)this.GetModelAnimator())
                 return;
-            this.PlayAnimation("Gesture, Additive", nameof(FireFMJ), "FireFMJ.playbackRate", 0.25f);
-            this.PlayAnimation("Gesture, Override", nameof(FireFMJ), "FireFMJ.playbackRate", 0.25f);
+            this.PlayAnimation("Gesture, Additive", nameof(FireFMJ), "FireFMJ.playbackRate", 0.5f);
+            this.PlayAnimation("Gesture, Override", nameof(FireFMJ), "FireFMJ.playbackRate", 0.5f);
         }
 
         public override void ModifyBullet(BulletAttack bulletAttack)
