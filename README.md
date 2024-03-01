@@ -16,7 +16,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 - Increased initial damage 300% -> 400%
 
-### Suppressive Fire (Vortex Rounds)
+### Suppressive Fire
 
 - Damage increase 100% -> 200%
 - Proc Coefficient increase 1 -> 2
