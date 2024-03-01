@@ -13,7 +13,7 @@ namespace SurvivorsPlus.Loader
             CharacterBody body = loader.GetComponent<CharacterBody>();
             body.baseMaxHealth = 110f;
             body.levelMaxHealth = 33f;
-            body.baseArmor = 0f;
+            body.baseArmor = 10f;
         }
     }
 }

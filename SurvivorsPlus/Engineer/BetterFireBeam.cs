@@ -85,7 +85,12 @@ namespace SurvivorsPlus.Engineer
             Ray laserRay = this.laserRay;
             RaycastHit raycastHit;
             double maxDistance = (double)this.maxDistance;
-            if (Util.CharacterRaycast(gameObject, laserRay, out raycastHit, (float)maxDistance, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.UseGlobal))
+            LayerIndex layerIndex = LayerIndex.world;
+            int mask1 = layerIndex.mask;
+            layerIndex = LayerIndex.entityPrecise;
+            int mask2 = layerIndex.mask;
+            LayerMask layerMask = (LayerMask)(mask1 | mask2);
+            if (Util.CharacterRaycast(gameObject, laserRay, out raycastHit, (float)maxDistance, layerMask, QueryTriggerInteraction.UseGlobal))
                 point = raycastHit.point;
             return point;
         }

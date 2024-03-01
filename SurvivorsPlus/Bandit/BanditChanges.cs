@@ -2,7 +2,6 @@ using R2API;
 using RoR2;
 using RoR2.Skills;
 using EntityStates.Bandit2.Weapon;
-using MonoMod.Cil;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -33,14 +32,12 @@ namespace SurvivorsPlus.Bandit
 
             SkillDef lightsOut = skillLocator.special.skillFamily.variants[0].skillDef;
             lightsOut.skillNameToken = "Open Wound";
-            lightsOut.skillDescriptionToken = "<style=cIsDamage>Slayer</style>. Fire a Hemogore round for <style=cIsDamage>600% damage</style>. Critical hits <style=cIsUtility>double Hemorrhage stacks</style>.";
+            lightsOut.skillDescriptionToken = "Fire a Hemogore round that deals <style=cIsDamage>600% damage</style> and applies <style=cIsHealth>Hemorrhage</style>. Critical hits apply <style=cIsHealth>2 Hemorrhage stacks</style>.";
             lightsOut.baseRechargeInterval = 6f;
 
             banditOpenWound = DamageAPI.ReserveDamageType();
             banditDoubleHemorrhage = DamageAPI.ReserveDamageType();
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ReduceHemorrhageDuration;
             On.RoR2.HealthComponent.SendDamageDealt += ApplyNewDamageTypes;
-            //  On.RoR2.DotController.InitDotCatalog += ChangeHemorrhageTicks;
             On.EntityStates.Bandit2.Weapon.SlashBlade.AuthorityModifyOverlapAttack += IncreaseHemorrhageStacks;
             On.EntityStates.Bandit2.Weapon.Bandit2FirePrimaryBase.OnEnter += ReduceRecoil;
             On.EntityStates.Bandit2.Weapon.FireSidearmResetRevolver.ModifyBullet += AddOpenWound;
@@ -51,32 +48,10 @@ namespace SurvivorsPlus.Bandit
             DamageAPI.AddModdedDamageType(overlapAttack, banditDoubleHemorrhage);
             orig(self, overlapAttack);
         }
-        /*
-        private void ChangeHemorrhageTicks(On.RoR2.DotController.orig_InitDotCatalog orig)
-        {
-            orig();
-            DotController.dotDefs[6].interval = 0.25f;
-            DotController.dotDefs[6].damageCoefficient = 0.495f; 0.33 15 is 750%
-        }
-        */
-        private void ReduceHemorrhageDuration(ILContext il)
-        {
-            ILCursor ilCursor = new ILCursor(il);
-            if (ilCursor.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcI4(6),
-                x => x.MatchLdcR4(15f)
-            ))
-            {
-                ++ilCursor.Index;
-                ilCursor.Next.Operand = 7.5f;
-            }
-            else
-                Debug.LogError("SurvivorPlus: Failed to apply Hemorrhage Duration hook");
-        }
 
         private void ApplyNewDamageTypes(On.RoR2.HealthComponent.orig_SendDamageDealt orig, DamageReport damageReport)
         {
-            if (DamageAPI.HasModdedDamageType(damageReport.damageInfo, banditOpenWound) && damageReport.damageInfo.crit)
+            if (DamageAPI.HasModdedDamageType(damageReport.damageInfo, banditOpenWound))
             {
                 if (damageReport.victimBody)
                 {
@@ -99,8 +74,8 @@ namespace SurvivorsPlus.Bandit
 
         private void AddOpenWound(On.EntityStates.Bandit2.Weapon.FireSidearmResetRevolver.orig_ModifyBullet orig, FireSidearmResetRevolver self, BulletAttack bulletAttack)
         {
+            bulletAttack.damageType = DamageType.Generic | DamageType.SuperBleedOnCrit;
             bulletAttack.AddModdedDamageType(banditOpenWound);
-            bulletAttack.damageType |= DamageType.SuperBleedOnCrit;
             //orig(self, bulletAttack);
         }
 

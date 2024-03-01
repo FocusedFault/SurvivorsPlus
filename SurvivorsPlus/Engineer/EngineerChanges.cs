@@ -17,7 +17,6 @@ namespace SurvivorsPlus.Engineer
         public static GameObject hitEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/Hitspark1.prefab").WaitForCompletion();
         public static GameObject laser = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/LaserEngiTurret.prefab").WaitForCompletion();
 
-        private GameObject bubbleShieldProjectile = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiBubbleShield.prefab").WaitForCompletion();
         private GameObject engi = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiBody.prefab").WaitForCompletion();
         private GameObject engiWalkerTurret = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiWalkerTurretBody.prefab").WaitForCompletion();
         private GameObject engiWalkerTurretMaster = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiWalkerTurretMaster.prefab").WaitForCompletion();
@@ -54,13 +53,6 @@ namespace SurvivorsPlus.Engineer
             fireDriver.maxDistance = 50f;
             fireDriver.shouldSprint = true;
 
-            foreach (Transform child in bubbleShieldProjectile.transform.GetChild(0))
-            {
-                if (child.name != "ActiveVisual")
-                    GameObject.Destroy(child.gameObject);
-                else
-                    child.gameObject.AddComponent<MeshCollider>();
-            }
             On.EntityStates.Engi.Mine.BaseMineArmingState.OnEnter += BaseMineArmingState_OnEnter;
             On.EntityStates.Engi.EngiWeapon.FireGrenades.OnEnter += FireGrenades_OnEnter;
         }

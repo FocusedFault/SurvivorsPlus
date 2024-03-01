@@ -1,5 +1,9 @@
 ## Changelog
 
+**1.1.0**
+
+- might add this later, README is up to date
+
 **1.0.2**
 
 - Reduces Double Tap max distance 100m -> 75m

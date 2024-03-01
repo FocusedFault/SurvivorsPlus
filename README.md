@@ -6,20 +6,14 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 <details>
 
-### Double Tap
-
-- Removes damage falloff
-- Now has a max distance of 75m
-
 ### Roll
 
 - No longer stops sprinting
 - Reduced speed/distance slightly
 - Invincible on roll
 
-### Phase Round (Full Metal Jacket)
+### Phase Round
 
-- Instant hitscan instead of a projectile
 - Increased initial damage 300% -> 400%
 
 ### Suppressive Fire (Vortex Rounds)
@@ -54,9 +48,9 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Reduced charges 3 -> 1
 - Increased cooldown 2s -> 3s
 
-### Arrow Rain (Electric Volley)
+### Arrow Rain
 
-- Replaced slow with shock
+- Increases slow to 80%
 - Increased damage 225% -> 450%
 - Increased proc coefficient 0.2 -> 0.6
 - Can now target flying enemies
@@ -66,11 +60,6 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ## Bandit
 
 <details>
-
-### Hemorrhage
-
-- Reduced length 15s -> 7.5s
-- Reduced damage 2000% -> 1000%
 
 ### Blast
 
@@ -88,8 +77,9 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Lights Out (Open Wound)
 
 - No longer resets cooldowns on kill
-- Doubles Hemorrhage stacks (on crit)
-- Applies Hemorrhage (on crit)
+- Removes Slayer
+- Applies Hemorrhage
+- Applies 2 Hemorrhage stacks on crit
 
 </details>
 
@@ -106,44 +96,10 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 - Removes arming mechanic, immediately explodes for 300% damage
 - Reduced cooldown 7s -> 5s
 
-### Bubble Shield
-
-- Actually impenetrable (can go out but nothing can go in)
-- Reduced time active 15s -> 10s
-
 ### TR58 Carbonizer Turret
 
 - Increases range 25 -> 50
 - Can now fire shurikens
-- Makes firing smoother
-
-</details>
-
-## Artificer
-
-<details>
-
-- Will update skill icons later
-- Elemental, swaps between 3 loadouts, Lightning -> Ice -> Fire
-- new ice M1 Ice Bolt, freezes enemies for 2s
-- new fire M2 Flame Bomb, charge and throw an igniting bomb
-- Secondary and Utility have increased cooldowns 8s/16s
-
-### Attunement
-
-- Special ability responsible for swapping elements
-- Skill cooldowns reset on swap
-- 3 max charges, 30s cooldown and recharges 1 by 1
-
-### Ion Surge
-
-- Reduces flight curve so base height is reduced
-
-### Flamethrower
-
-- Increased Ignite chance to 100%
-- Increased distance 21 -> 32
-- Increased damage per tick (less ticks, more damage, overall damage is the same)
 
 </details>
 
@@ -163,7 +119,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Eviscerate
 
-- Increases damage 110% -> 260%
+- Now hits everyone in an 8m radius
 
 </details>
 
@@ -177,27 +133,13 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 </details>
 
-## Acrid
-
-<details>
-
-### Blight
-
-- Reduces base damage per tick 60% -> 30%
-- Increases duration 5s -> 10s
-- Stacks exponentially (Higher stacks deal more damage per tick)
-- damage multiplier = (1.5 ^ stacks)
-- damage per tick \* damage multiplier
-
-</details>
-
 ## Loader
 
 <details>
 
 - Reduces max hp 160 -> 110
 - Reduces level hp 48 -> 33
-- Reduces base armor 20 -> 0
+- Reduces base armor 20 -> 10
 
 </details>
 

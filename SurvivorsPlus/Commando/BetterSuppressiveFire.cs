@@ -8,8 +8,8 @@ namespace SurvivorsPlus.Commando
     public class BetterSuppressiveFire : BaseState
     {
         public static GameObject effectPrefab = FireBarrage.effectPrefab;
-        public static GameObject hitEffectPrefab = CommandoChanges.newHitEffect;
-        public static GameObject tracerEffectPrefab = CommandoChanges.newTracer;
+        public static GameObject hitEffectPrefab = FireBarrage.hitEffectPrefab;
+        public static GameObject tracerEffectPrefab = FireBarrage.tracerEffectPrefab;
         public static float damageCoefficient = 2f;
         public static float force = FireSweepBarrage.force;
         public static float minSpread = FireBarrage.minSpread;
