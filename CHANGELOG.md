@@ -1,5 +1,16 @@
 ## Changelog
 
+**1.1.1**
+
+- Changes Open Wound (lights out) to apply remaining Hemorrhage damage immediately
+- Changes Bandit's shotgun to fire like an actual shotgun
+- Changes Bandit's Smoke Bomb to begin cooldown when the skill ends
+- Increases Arrow Rain damage 450% -> 600%
+- Changes Eviscerate to apply expose
+- Removes expose from Slicing Winds
+- Increases Eviscerate damage 110% -> 150%
+- Removes Eviscerate AoE
+
 **1.1.0**
 
 - might add this later, README is up to date

@@ -1,5 +1,6 @@
 using R2API;
 using RoR2;
+using RoR2.Skills;
 using RoR2.Orbs;
 using RoR2.Projectile;
 using EntityStates;
@@ -13,85 +14,62 @@ namespace SurvivorsPlus.Captain
 {
     public class CaptainChanges
     {
-        private GameObject tazerProjectile = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Captain/CaptainTazer.prefab").WaitForCompletion();
-        private GameObject tazerImpact = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Captain/CaptainTazerNova.prefab").WaitForCompletion();
         private GameObject captain = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Captain/CaptainBody.prefab").WaitForCompletion();
-        public static DamageAPI.ModdedDamageType captainTaserSource;
 
         public CaptainChanges()
         {
-            captainTaserSource = DamageAPI.ReserveDamageType();
+            /*
+            foreach (GenericSkill gs in captain.GetComponents<GenericSkill>())
+            {
+                // Debug.LogWarning(gs.skillName);
+                if (gs.skillName.Contains("Utility") || gs.skillName.Contains("Special") || gs.skillName.Contains("SupplyDrop1") || gs.skillName.Contains("SupplyDrop2"))
+                    GameObject.Destroy(gs);
+            }
+            */
 
-            DamageAPI.ModdedDamageTypeHolderComponent mdc = tazerProjectile.AddComponent<DamageAPI.ModdedDamageTypeHolderComponent>();
-            mdc.Add(captainTaserSource);
+            SkillLocator skillLocator = captain.GetComponent<SkillLocator>();
 
-            ProjectileDamage pd = tazerProjectile.GetComponent<ProjectileDamage>();
-            pd.damageType = DamageType.Shock5s;
+            skillLocator.primary.skillFamily.variants[0].skillDef.activationState = new SerializableEntityStateType(typeof(EntityStates.Captain.Weapon.FireCaptainShotgun));
 
-            UnityEngine.Object.Destroy(tazerProjectile.GetComponent<ProjectileImpactExplosion>());
-            ProjectileSingleTargetImpact psi = tazerProjectile.AddComponent<ProjectileSingleTargetImpact>();
-            psi.destroyOnWorld = false;
-            psi.destroyWhenNotAlive = true;
-            psi.impactEffect = tazerImpact;
-
-            captain.GetComponent<SkillLocator>().secondary.skillFamily.variants[0].skillDef.skillDescriptionToken = "<style=cIsDamage>Shocking</style>. Fire a fast tazer that deals <style=cIsDamage>100% damage</style>. <style=cIsUtility>Bounces to nearby enemies</style>.";
-
-            On.RoR2.GlobalEventManager.OnHitEnemy += AddTaserBounce;
             On.EntityStates.CaptainDefenseMatrixItem.DefenseMatrixOn.DeleteNearbyProjectile += MicrobotEdit;
         }
 
-        private void AddTaserBounce(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        private void FamilyChanges()
+
         {
-            orig(self, damageInfo, victim);
-            if (damageInfo.HasModdedDamageType(captainTaserSource))
-            {
-                CharacterBody victimBody = victim.GetComponent<CharacterBody>();
-                CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
-                if (victimBody && attackerBody)
-                {
-                    List<HealthComponent> bouncedObjects = new List<HealthComponent>();
-                    bouncedObjects.Add(victimBody.healthComponent);
+            SkillLocator skillLocator = captain.GetComponent<SkillLocator>();
 
-                    int initialTargets = 2; //Since the range is smaller than Epidemic, add more initial targets.
-                    float range = 15f;
+            GenericSkill primarySkill = captain.AddComponent<GenericSkill>();
+            primarySkill.skillName = "captainPrimary";
 
-                    //Need to individually find all targets for the first bounce.
-                    for (int i = 0; i < initialTargets; i++)
-                    {
-                        LightningOrb taserLightning = new LightningOrb
-                        {
-                            bouncedObjects = bouncedObjects,
-                            attacker = damageInfo.attacker,
-                            inflictor = damageInfo.attacker,
-                            damageValue = damageInfo.damage,
-                            procCoefficient = 1f,
-                            teamIndex = attackerBody.teamComponent.teamIndex,
-                            isCrit = damageInfo.crit,
-                            procChainMask = damageInfo.procChainMask,
-                            lightningType = LightningOrb.LightningType.Ukulele,
-                            damageColorIndex = DamageColorIndex.Default,
-                            bouncesRemaining = 2,
-                            targetsToFindPerBounce = 1,
-                            range = range,
-                            origin = damageInfo.position,
-                            damageType = DamageType.Shock5s,
-                            speed = 120f
-                        };
-                        //2 initial lightnings
-                        //Each lightning will hit, then bounce 2 extra times
+            SkillFamily newFamily = ScriptableObject.CreateInstance<SkillFamily>();
+            (newFamily as ScriptableObject).name = "captainPrimaryFamily";
+            //newFamily.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = snipeLight }, new SkillFamily.Variant() { skillDef = badPrimary } };
 
-                        HurtBox hurtBox = taserLightning.PickNextTarget(victimBody.corePosition);
+            primarySkill._skillFamily = newFamily;
+            ContentAddition.AddSkillFamily(newFamily);
+            skillLocator.primary = primarySkill;
 
-                        //Fire orb if HurtBox is found.
-                        if (hurtBox)
-                        {
-                            taserLightning.target = hurtBox;
-                            OrbManager.instance.AddOrb(taserLightning);
-                            taserLightning.bouncedObjects.Add(hurtBox.healthComponent);
-                        }
-                    }
-                }
-            }
+            GenericSkill secondarySkill = captain.AddComponent<GenericSkill>();
+            primarySkill.skillName = "captainSecondary";
+
+            SkillFamily newFamily2 = ScriptableObject.CreateInstance<SkillFamily>();
+            (newFamily2 as ScriptableObject).name = "captainSecondaryFamily";
+            //  newFamily2.variants = new SkillFamily.Variant[] { new SkillFamily.Variant() { skillDef = snipeHeavy } };
+
+            secondarySkill._skillFamily = newFamily2;
+            ContentAddition.AddSkillFamily(newFamily2);
+            skillLocator.secondary = secondarySkill;
+
+            GenericSkill utilitySkill = captain.AddComponent<GenericSkill>();
+            utilitySkill.skillName = "captainUtility";
+            //utilitySkill._skillFamily = utilityFamily;
+            skillLocator.utility = utilitySkill;
+
+            GenericSkill specialSkill = captain.AddComponent<GenericSkill>();
+            specialSkill.skillName = "captainSpecial";
+            //specialSkill._skillFamily = specialFamily;
+            skillLocator.special = specialSkill;
         }
 
         private bool MicrobotEdit(On.EntityStates.CaptainDefenseMatrixItem.DefenseMatrixOn.orig_DeleteNearbyProjectile orig, DefenseMatrixOn self)

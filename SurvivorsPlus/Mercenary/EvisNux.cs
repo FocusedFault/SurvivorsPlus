@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
-#nullable disable
 namespace SurvivorsPlus.Mercenary
 {
     public class EvisNux : BaseState
@@ -33,10 +32,13 @@ namespace SurvivorsPlus.Mercenary
         private bool crit;
         private static float minimumDuration = 0.5f;
         private CameraTargetParams.AimRequest aimRequest;
+        private int hitCount = 0;
 
         public override void OnEnter()
         {
             base.OnEnter();
+            // Debug.LogWarning(Evis.damageFrequency); 7
+            //  Debug.LogWarning(Evis.damageCoefficient); 1.5
             this.CreateBlinkEffect(Util.GetCorePosition(this.gameObject));
             Util.PlayAttackSpeedSound(Evis.beginSoundString, this.gameObject, 1.2f);
             this.crit = Util.CheckRoll(this.critStat, this.characterBody.master);
@@ -60,43 +62,43 @@ namespace SurvivorsPlus.Mercenary
             float num1 = 1f / Evis.damageFrequency / this.attackSpeedStat;
             if (this.attackStopwatch >= (double)num1)
             {
+                hitCount++;
                 this.attackStopwatch -= num1;
-                List<HurtBox> hurtboxList = this.SearchForTarget();
-                if (hurtboxList.Count > 0)
+                HurtBox hurtBox = this.SearchForTarget();
+                if ((bool)hurtBox)
                 {
                     Util.PlayAttackSpeedSound(Evis.slashSoundString, this.gameObject, Evis.slashPitch);
                     Util.PlaySound(Evis.dashSoundString, this.gameObject);
                     Util.PlaySound(Evis.impactSoundString, this.gameObject);
-                    foreach (HurtBox hurtBox in hurtboxList)
+                    HurtBoxGroup hurtBoxGroup = hurtBox.hurtBoxGroup;
+                    HurtBox hurtBox2 = hurtBoxGroup.hurtBoxes[Random.Range(0, hurtBoxGroup.hurtBoxes.Length - 1)];
+                    if ((bool)hurtBox2)
                     {
-                        HurtBoxGroup hurtBoxGroup = hurtBox.hurtBoxGroup;
-                        HurtBox hurtBox2 = hurtBoxGroup.hurtBoxes[Random.Range(0, hurtBoxGroup.hurtBoxes.Length - 1)];
-                        if ((bool)hurtBox2)
+                        Vector3 position = hurtBox2.transform.position;
+                        Vector2 normalized = Random.insideUnitCircle.normalized;
+                        Vector3 normal = new Vector3(normalized.x, 0.0f, normalized.y);
+                        EffectManager.SimpleImpactEffect(Evis.hitEffectPrefab, position, normal, false);
+                        Transform transform = hurtBox.hurtBoxGroup.transform;
+                        TemporaryOverlay temporaryOverlay = transform.gameObject.AddComponent<TemporaryOverlay>();
+                        temporaryOverlay.duration = num1;
+                        temporaryOverlay.animateShaderAlpha = true;
+                        temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0.0f, 1f, 1f, 0.0f);
+                        temporaryOverlay.destroyComponentOnEnd = true;
+                        temporaryOverlay.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matMercEvisTarget");
+                        temporaryOverlay.AddToCharacerModel(transform.GetComponent<CharacterModel>());
+                        if (NetworkServer.active)
                         {
-                            Vector3 position = hurtBox2.transform.position;
-                            Vector2 normalized = Random.insideUnitCircle.normalized;
-                            Vector3 normal = new Vector3(normalized.x, 0.0f, normalized.y);
-                            EffectManager.SimpleImpactEffect(Evis.hitEffectPrefab, position, normal, false);
-                            Transform transform = hurtBox.hurtBoxGroup.transform;
-                            TemporaryOverlay temporaryOverlay = transform.gameObject.AddComponent<TemporaryOverlay>();
-                            temporaryOverlay.duration = num1;
-                            temporaryOverlay.animateShaderAlpha = true;
-                            temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0.0f, 1f, 1f, 0.0f);
-                            temporaryOverlay.destroyComponentOnEnd = true;
-                            temporaryOverlay.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matMercEvisTarget");
-                            temporaryOverlay.AddToCharacerModel(transform.GetComponent<CharacterModel>());
-                            if (NetworkServer.active)
-                            {
-                                DamageInfo damageInfo = new DamageInfo();
-                                damageInfo.damage = Evis.damageCoefficient * this.damageStat;
-                                damageInfo.attacker = this.gameObject;
-                                damageInfo.procCoefficient = Evis.procCoefficient;
-                                damageInfo.position = hurtBox2.transform.position;
-                                damageInfo.crit = this.crit;
-                                hurtBox2.healthComponent.TakeDamage(damageInfo);
-                                GlobalEventManager.instance.OnHitEnemy(damageInfo, hurtBox2.healthComponent.gameObject);
-                                GlobalEventManager.instance.OnHitAll(damageInfo, hurtBox2.healthComponent.gameObject);
-                            }
+                            DamageInfo damageInfo = new DamageInfo();
+                            damageInfo.damage = 1.5f * this.damageStat;
+                            damageInfo.attacker = this.gameObject;
+                            damageInfo.procCoefficient = Evis.procCoefficient;
+                            damageInfo.position = hurtBox2.transform.position;
+                            damageInfo.crit = this.crit;
+                            if (this.hitCount == 7)
+                                damageInfo.damageType |= DamageType.ApplyMercExpose;
+                            hurtBox2.healthComponent.TakeDamage(damageInfo);
+                            GlobalEventManager.instance.OnHitEnemy(damageInfo, hurtBox2.healthComponent.gameObject);
+                            GlobalEventManager.instance.OnHitAll(damageInfo, hurtBox2.healthComponent.gameObject);
                         }
                     }
                 }
@@ -110,17 +112,17 @@ namespace SurvivorsPlus.Mercenary
             this.outer.SetNextStateToMain();
         }
 
-        private List<HurtBox> SearchForTarget()
+        private HurtBox SearchForTarget()
         {
             BullseyeSearch bullseyeSearch = new BullseyeSearch();
             bullseyeSearch.searchOrigin = this.transform.position;
             bullseyeSearch.searchDirection = Random.onUnitSphere;
-            bullseyeSearch.maxDistanceFilter = 8f;
+            bullseyeSearch.maxDistanceFilter = Evis.maxRadius;
             bullseyeSearch.teamMaskFilter = TeamMask.GetUnprotectedTeams(this.GetTeam());
             bullseyeSearch.sortMode = BullseyeSearch.SortMode.Distance;
             bullseyeSearch.RefreshCandidates();
             bullseyeSearch.FilterOutGameObject(this.gameObject);
-            return bullseyeSearch.GetResults().ToList();
+            return bullseyeSearch.GetResults().FirstOrDefault<HurtBox>();
         }
 
         private void CreateBlinkEffect(Vector3 origin)

@@ -51,7 +51,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ### Arrow Rain
 
 - Increases slow to 80%
-- Increased damage 225% -> 450%
+- Increased damage 225% -> 600%
 - Increased proc coefficient 0.2 -> 0.6
 - Can now target flying enemies
 
@@ -60,6 +60,10 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 ## Bandit
 
 <details>
+
+### Burst
+
+- Changes bullet pattern to resemble a shotgun
 
 ### Blast
 
@@ -71,15 +75,12 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Smoke Bomb
 
-- Increases invisibility duration 3s -> 4s
-- Increases cooldown 6s -> 8s
+- Cooldown starts after ability ends
 
 ### Lights Out (Open Wound)
 
 - No longer resets cooldowns on kill
-- Removes Slayer
-- Applies Hemorrhage
-- Applies 2 Hemorrhage stacks on crit
+- Applies remaining Hemorrhage damage immediately and clears Hemorrhage stacks
 
 </details>
 
@@ -119,7 +120,12 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Eviscerate
 
-- Now hits everyone in an 8m radius
+- Increases damage 110% -> 150%
+- Exposes on final hit
+
+### Slicing Winds
+
+- No longer applies expose
 
 </details>
 
@@ -167,7 +173,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### HH44 Marksman (HH44 Rounds)
 
-- Is now the primary instead of smart rounds
+- Is now a primary
 - Reduces damage 400% -> 300%
 - Has an active reload system (uses secondary charges)
 - Has an active reload bonus of +75% total damage and can hit weakspots
@@ -178,7 +184,7 @@ Adds acceleration to Artificer and MUL-T to match other survivors. Can configure
 
 ### Polar Field Device
 
-- Increases slow down
+- Increases projectile slow
 
 ### Supercharge
 

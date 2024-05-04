@@ -19,9 +19,7 @@ namespace SurvivorsPlus.Huntress
             huntressSlow = DamageAPI.ReserveDamageType();
             SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.HuntressWeapon.FireFlurrySeekingArrow.asset", "orbProcCoefficient", "0.8");
             SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.HuntressWeapon.FireFlurrySeekingArrow.asset", "baseDuration", "1");
-            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.HuntressWeapon.ThrowGlaive.asset", "damageCoefficient", "4");
-            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.HuntressWeapon.ThrowGlaive.asset", "damageCoefficientPerBounce", "1");
-            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.ArrowRain.asset", "damageCoefficient", "4.5");
+            SurvivorsPlus.ChangeEntityStateValue("RoR2/Base/Huntress/EntityStates.Huntress.ArrowRain.asset", "damageCoefficient", "6");
 
             arrowRainProjectile.GetComponent<ProjectileDotZone>().overlapProcCoefficient = 0.6f;
             arrowRainProjectile.GetComponent<ProjectileDamage>().damageType = DamageType.Generic;
